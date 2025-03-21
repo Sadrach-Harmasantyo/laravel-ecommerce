@@ -1,6 +1,6 @@
 # Laravel E-Commerce
 
-![Laravel](https://img.shields.io/badge/Laravel-11-red?style=flat-square&logo=laravel) ![Livewire](https://img.shields.io/badge/Livewire-3-blue?style=flat-square&logo=laravel) ![Filament](https://img.shields.io/badge/Filament-3-green?style=flat-square&logo=filament) ![TailwindCSS](https://img.shields.io/badge/TailwindCSS-v3-06B6D4?style=flat-square&logo=tailwind-css)
+![Laravel](https://img.shields.io/badge/Laravel-11-red?style=flat-square&logo=laravel) ![Livewire](https://img.shields.io/badge/Livewire-3-blue?style=flat-square&logo=laravel) ![Filament](https://img.shields.io/badge/Filament-3-green?style=flat-square&logo=filament) ![TailwindCSS](https://img.shields.io/badge/TailwindCSS-v3-06B6D4?style=flat-square&logo=tailwind-css) ![MySQL](https://img.shields.io/badge/MySQL-8-4479A1?style=flat-square&logo=mysql) ![Bootstrap](https://img.shields.io/badge/Bootstrap-5-7952B3?style=flat-square&logo=bootstrap)
 
 ## About the Project
 
@@ -19,6 +19,11 @@ This repository showcases a **modern e-commerce application** built with the lat
 - **Dynamic UI**: The frontend is powered by Livewire 3, providing real-time, interactive user experiences.
 - **Powerful Admin Panel**: With Filament 3, managing the store's content, orders, and products is seamless.
 - **Responsive Design**: Tailwind CSS ensures the application looks great on all screen sizes.
+- **Database Integration**: MySQL is used for efficient data storage and retrieval.
+- **E-commerce Functionality**: The application includes features like product listings, shopping cart, and checkout.
+- **User Authentication**: User registration and login functionality.
+- **User Profiles**: Users can view their order history and profile details.
+- **Notifications Admin**: Notifications for new orders.
 
 ---
 
@@ -61,8 +66,8 @@ Ensure you have the following installed:
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/vickypandey14/E-commerce-using-Laravel-11-Livewire-3-Filament-3-and-Tailwind-CSS.git
-   cd E-commerce-using-Laravel-11-Livewire-3-Filament-3-and-Tailwind-CSS
+   git clone https://github.com/Sadrach-Harmasantyo/laravel-ecommerce.git
+   cd laravel-ecommerce
    ```
 
 2. Install dependencies:
