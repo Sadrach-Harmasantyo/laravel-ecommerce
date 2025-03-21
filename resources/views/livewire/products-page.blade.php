@@ -18,7 +18,7 @@
                   </li> 
 
                 @endforeach 
-
+              
               </ul>
   
             </div>
@@ -65,13 +65,11 @@
             <div class="p-4 mb-5 bg-white border border-gray-200 dark:bg-gray-900 dark:border-gray-900">
               <h2 class="text-2xl font-bold dark:text-gray-400">Price</h2>
               <div class="w-16 pb-2 mb-6 border-b border-rose-600 dark:border-gray-400"></div>
-              <div>
-                <div class="font-semibold">{{ Number::currency($price_range, 'INR') }}</div>
-                <input type="range" wire:model.live="price_range" class="w-full h-1 mb-4 bg-blue-100 rounded appearance-none cursor-pointer" max="500000" value="0" step="1000">
-                <div class="flex justify-between">
-                  <span class="inline-block text-lg font-bold text-blue-400 ">{{ Number::currency(1000, 'INR') }}</span>
-                  <span class="inline-block text-lg font-bold text-blue-400 ">{{ Number::currency(500000, 'INR') }}</span>
-                </div>
+              <div class="flex flex-col gap-3">
+                <label for="min-price" class="text-lg">Min. Price</label>
+                <input id="min-price" type="number" wire:model.live="min_price" placeholder="Min Price" class="text-lg border border-gray-200 rounded-md py-2 px-4">
+                <label for="max-price" class="text-lg">Max. Price</label>
+                <input id="max-price" type="number" wire:model.live="max_price" placeholder="Max Price" class="text-lg border border-gray-200 rounded-md py-2 px-4">
               </div>
             </div>
 
@@ -80,7 +78,9 @@
           <div class="w-full px-3 lg:w-3/4">
             <div class="px-3 mb-4">
               <div class="items-center justify-between hidden px-3 py-2 bg-gray-100 md:flex dark:bg-gray-900 ">
-                <div class="flex items-center justify-between">
+                <div class="flex items-center justify-between w-full gap-3">
+
+                  <input type="text" name="search" placeholder="Search product" class="text-lg border border-gray-200 rounded-md py-2 px-4 w-full" wire:model.live="search">
                   
                   <select wire:model.live="sort" class="block w-40 text-base bg-gray-100 cursor-pointer dark:text-gray-400 dark:bg-gray-900">
 
@@ -92,16 +92,38 @@
                 </div>
               </div>
             </div>
-            <div class="flex flex-wrap items-center ">
+            <div class="flex flex-wrap items-center">
   
               @foreach ($products as $product)
               
                 <div class="w-full px-3 mb-6 sm:w-1/2 md:w-1/3" wire:key="{{ $product->id }}">
                   <div class="border border-gray-300 dark:border-gray-700">
                     <div class="relative bg-gray-200">
-                      <a wire:navigate href="{{ route('product-details', $product->slug) }}" class="">
-                        <img src="{{ url('storage', $product->images[0]) }}" alt="{{ $product->name }}" class="object-cover w-full h-56 mx-auto ">
+                      <a wire:navigate href="{{ route('product-detail', $product->slug) }}" class="">
+                        <img src="{{ url('storage', $product->images[0]) }}" alt="{{ $product->name }}" class="object-contain w-full h-56 mx-auto ">
                       </a>
+                      @if($product->on_sale)
+                        <div class="absolute top-2 right-2 bg-red-500 text-white text-sm font-bold px-2 py-1 rounded">
+                          SALE
+                        </div>
+                      @endif
+                      @if($product->is_featured)
+                        <div class="absolute top-2 right-2 bg-blue-500 text-white text-sm font-bold px-2 py-1 rounded">
+                          FEATURED
+                        </div>
+                      @endif
+                    </div>
+                    <div class="px-3 mt-3 flex flex-wrap gap-2">
+                      @if($product->category)
+                        <span class="bg-blue-100 text-blue-800 text-sm font-medium px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300">
+                          {{ $product->category->name }}
+                        </span>
+                      @endif
+                      @if($product->brand)
+                        <span class="bg-slate-200 text-black text-sm font-medium px-2.5 py-0.5 rounded">
+                          {{ $product->brand->name }}
+                        </span>
+                      @endif
                     </div>
                     <div class="p-3">
                       <div class="flex items-center justify-between gap-2 mb-2">
@@ -110,17 +132,22 @@
                         </h3>
                       </div>
                       <p class="text-lg">
-                        <span class="text-green-600 dark:text-green-600">{{ Number::currency($product->price, 'INR') }}</span>
+                        <span class="text-xl font-bold text-gray-900 dark:text-white">Rp{{ number_format($product->price, 0, ',', '.') }}</span>
                       </p>
                     </div>
-                    <div class="flex justify-center p-4 border-t border-gray-300 dark:border-gray-700">
+                    {{-- <div class="flex justify-center p-4 border-t border-gray-300 dark:border-gray-700">
+
+                      @auth
+                        <button wire:click="addToCart({{ $product->id }})" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Add to cart</button>
+                      @else
+                        <a href="{{ route('login') }}" onclick="event.preventDefault(); window.location.href='{{ route('login') }}';" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Add to cart</a>
+                      @endauth
     
-                      <a wire:click.prevent='addToCart({{ $product->id }})' href="#" class="text-gray-500 flex items-center space-x-2 dark:text-gray-400 hover:text-red-500 dark:hover:text-red-300">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="w-4 h-4 bi bi-cart3 " viewBox="0 0 16 16">
-                          <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .49.598l-1 5a.5.5 0 0 1-.465.401l-9.397.472L4.415 11H13a.5.5 0 0 1 0 1H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l.84 4.479 9.144-.459L13.89 4H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"></path>
-                        </svg><span wire:loading.remove wire:target='addToCart({{ $product->id }})'>Add to Cart</span> <span wire:loading wire:target='addToCart({{ $product->id }})'>Adding to cart...</span>
+                    </div> --}}
+                    <div class="mt-auto flex border-t border-gray-200 divide-x divide-gray-200 dark:border-gray-700 dark:divide-gray-700">
+                      <a href="{{ route('product-detail', $product->slug) }}" class="w-full py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-medium rounded-es-xl bg-white text-gray-800 shadow-sm hover:bg-gray-50 dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-800">
+                        View Details
                       </a>
-    
                     </div>
                   </div>
                 </div>
@@ -128,6 +155,7 @@
               @endforeach
   
             </div>
+
             <!-- pagination start -->
             <div class="flex justify-end mt-6">
               {{ $products->links() }}

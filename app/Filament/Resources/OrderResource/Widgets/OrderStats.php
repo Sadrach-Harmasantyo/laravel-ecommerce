@@ -5,25 +5,31 @@ namespace App\Filament\Resources\OrderResource\Widgets;
 use App\Models\Order;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
-use Illuminate\Support\Number;
 
 class OrderStats extends BaseWidget
 {
     protected function getStats(): array
     {
         return [
-            Stat::make('New Orders', Order::query()->where('status', 'new')->count()),
-
-            Stat::make('Delivered Orders', Order::query()->where('status', 'delivered')->count()),
-
-            Stat::make('Orders under Processing', Order::query()->where('status', 'processing')->count()),
-
-            Stat::make('Shipped Orders', Order::query()->where('status', 'shipped')->count()),
-
-            Stat::make('Cancelled Orders', Order::query()->where('status', 'cancelled')->count()),
-
-            Stat::make('Average Price', Number::currency(Order::query()->avg('grand_total'), 'INR')),
-
+            Stat::make('Total Orders', Order::count())
+                ->description('All orders in the system')
+                ->descriptionIcon('heroicon-m-shopping-cart')
+                ->color('primary'),
+                
+            Stat::make('Pending Orders', Order::where('status', 'new')->count())
+                ->description('Orders waiting to be processed')
+                ->descriptionIcon('heroicon-m-clock')
+                ->color('warning'),
+                
+            Stat::make('Completed Orders', Order::whereIn('status', ['delivered', 'completed'])->count())
+                ->description('Successfully delivered orders')
+                ->descriptionIcon('heroicon-m-check-badge')
+                ->color('success'),
+                
+            Stat::make('Total Revenue', 'IDR ' . number_format(Order::where('payment_status', 'paid')->sum('grand_total'), 2))
+                ->description('From paid orders')
+                ->descriptionIcon('heroicon-m-banknotes')
+                ->color('success'),
         ];
     }
 }

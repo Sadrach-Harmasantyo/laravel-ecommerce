@@ -21,6 +21,12 @@ class Navbar extends Component
         $this->total_count = $total_count;
     }
 
+    #[On('cart-updated')]
+    public function refreshCartCount()
+    {
+        $this->total_count = count(CartManagement::getCartItemsFromCookie());
+    }
+
     public function render()
     {
         return view('livewire.partials.navbar');

@@ -1,4 +1,4 @@
-# Laravel-Livewire E-Commerce Application
+# Laravel E-Commerce
 
 ![Laravel](https://img.shields.io/badge/Laravel-11-red?style=flat-square&logo=laravel) ![Livewire](https://img.shields.io/badge/Livewire-3-blue?style=flat-square&logo=laravel) ![Filament](https://img.shields.io/badge/Filament-3-green?style=flat-square&logo=filament) ![TailwindCSS](https://img.shields.io/badge/TailwindCSS-v3-06B6D4?style=flat-square&logo=tailwind-css)
 
@@ -10,6 +10,8 @@ This repository showcases a **modern e-commerce application** built with the lat
 - **Livewire 3**: A powerful library for building dynamic frontends using server-driven rendering.
 - **Filament 3**: An elegant admin panel framework to manage the application backend efficiently.
 - **Tailwind CSS**: A utility-first CSS framework for creating responsive and modern UI designs.
+- **MySQL**: A popular relational database management system.
+- **Bootstrap**: A popular front-end framework for building responsive and mobile-first websites.
 
 ### Features
 
@@ -24,16 +26,20 @@ This repository showcases a **modern e-commerce application** built with the lat
 
 The following pages have been developed using **Livewire 3**:
 
-1. **Cancel Page**: Displays the order cancellation status.
-2. **Success Page**: Confirms successful orders.
-3. **Cart Page**: Displays the user's cart items.
-4. **Categories Page**: Showcases product categories.
-5. **Checkout Page**: Handles the checkout process.
-6. **Home Page**: The landing page with featured products and categories.
-7. **My Orders Page**: Lists the user's order history.
-8. **Order Details Page**: Provides detailed information about a specific order.
-9. **Products Page**: Displays all available products.
-10. **Product Details Page**: Shows information about a specific product.
+1. **About Page**: Provides information about the store.
+2. **Blog Page**: Displays blog posts.
+3. **Blog Details Page**: Shows detailed information about a blog post.
+4. **Brands Page**: Lists available brands.
+5. **Cart Page**: Displays the user's cart items.
+6. **Categories Page**: Showcases product categories.
+7. **Checkout Page**: Handles the checkout process.
+8. **Home Page**: The landing page with featured products and categories.
+9. **My Orders Page**: Lists the user's order history.
+10. **Order Details Page**: Provides detailed information about a specific order.
+11. **Products Page**: Displays all available products.
+12. **Product Details Page**: Shows information about a specific product.
+13. **Profile Page**: Confirms successful orders.
+13. **Success Page**: Confirms successful orders.
 
 ---
 
@@ -91,48 +97,18 @@ Ensure you have the following installed:
    php artisan serve
    ```
 
-### Testing
+<!-- ### Testing
 
 Run the following command to execute tests:
 ```bash
 php artisan test
-```
+``` -->
 
 ---
 
 ## Roadmap
 
 ### Planned Features:
-- Add a user authentication system.
-- Build an advanced search and filtering functionality.
-- Enhance the admin panel with analytics and reporting tools.
-- Implement payment gateway integration.
-- Add dynamic inventory and stock management.
+- Add product variant and stock management.
 
 ---
-
-## Contributing
-
-Contributions are welcome! Please follow these steps:
-
-1. Fork the repository.
-2. Create a new branch (`git checkout -b feature-name`).
-3. Commit your changes (`git commit -m 'Add feature'`).
-4. Push to the branch (`git push origin feature-name`).
-5. Open a pull request.
-
----
-
-## License
-
-This project is open-source and licensed under the [MIT License](LICENSE).
-
----
-
-## Contact
-
-For any questions or feedback, feel free to reach out:
-
-- **Vivek Chandra Pandey**  
-  GitHub: [vickypandey14](https://github.com/vickypandey14)
-  Website: [bytewebster.com](https://bytewebster.com)

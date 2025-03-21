@@ -22,7 +22,7 @@
               </p>
             </div>
             <div class="mt-1 flex items-center gap-x-2">
-              <div>Jace Grimes</div>
+              <div>{{ $order->user->name }}</div>
             </div>
           </div>
         </div>
@@ -49,7 +49,7 @@
             </div>
             <div class="mt-1 flex items-center gap-x-2">
               <h3 class="text-xl font-medium text-gray-800 dark:text-gray-200">
-                17-02-2024
+                {{ $order->created_at->format('d-m-Y') }}
               </h3>
             </div>
           </div>
@@ -74,12 +74,48 @@
               </p>
             </div>
             <div class="mt-1 flex items-center gap-x-2">
-              <span class="bg-yellow-500 py-1 px-3 rounded text-white shadow">Processing</span>
+              {{-- <span class="bg-{{ $order->status === 'new' ? 'orange' : ($order->status === 'processing' ? 'yellow' : ($order->status === 'completed' ? 'green' : 'red')) }}-500 py-1 px-3 rounded text-white shadow">
+                {{ ucfirst($order->status) }}
+              </span> --}}
+              <span>
+                {{ ucfirst($order->status) }}
+              </span>
             </div>
           </div>
         </div>
       </div>
       <!-- End Card -->
+
+      <!-- Add this after the order status card -->
+      @if($order->status === 'shipped' && $order->tracking_number)
+      <div class="flex flex-col bg-white border shadow-sm rounded-xl dark:bg-slate-900 dark:border-gray-800">
+        <div class="p-4 md:p-5 flex gap-x-4">
+          <div class="flex-shrink-0 flex justify-center items-center size-[46px] bg-gray-100 rounded-lg dark:bg-gray-800">
+            <svg class="flex-shrink-0 size-5 text-gray-600 dark:text-gray-400" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+            </svg>
+          </div>
+
+          <div class="grow">
+            <div class="flex items-center gap-x-2">
+              <p class="text-xs uppercase tracking-wide text-gray-500">
+                Tracking Number
+              </p>
+            </div>
+            <div class="mt-1 flex items-center gap-x-2">
+              <span id="tracking-number" class="font-medium cursor-pointer hover:text-blue-600 flex items-center" 
+                onclick="copyTrackingAndRedirect('{{ $order->tracking_number }}')">
+                {{ $order->tracking_number }}
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                </svg>
+              </span>
+              <span id="copy-message" class="text-green-500 text-xs hidden ml-2">Copied!</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      @endif
   
       <!-- Card -->
       <div class="flex flex-col bg-white border shadow-sm rounded-xl dark:bg-slate-900 dark:border-gray-800">
@@ -100,7 +136,12 @@
               </p>
             </div>
             <div class="mt-1 flex items-center gap-x-2">
-              <span class="bg-green-500 py-1 px-3 rounded text-white shadow">Paid</span>
+              {{-- <span class="bg-{{ $order->payment_status === 'pending' ? 'orange' : ($order->payment_status === 'paid' ? 'green' : 'red') }}-500 py-1 px-3 rounded text-white shadow">
+                {{ ucfirst($order->payment_status) }}
+              </span> --}}
+              <span>
+                {{ ucfirst($order->payment_status) }}
+              </span>
             </div>
           </div>
         </div>
@@ -122,36 +163,21 @@
               </tr>
             </thead>
             <tbody>
-  
-              <!--[if BLOCK]><![endif]-->
-              <tr wire:key="53">
+              @foreach($order->items as $item)
+              <tr wire:key="{{ $item->id }}">
                 <td class="py-4">
                   <div class="flex items-center">
-                    <img class="h-16 w-16 mr-4" src="http://localhost:8000/storage/products/01HND3J5XS7ZC5J84BK5YDM6Z2.jpg" alt="Product image">
-                    <span class="font-semibold">Samsung Galaxy Watch6</span>
+                    <img class="h-16 w-16 mr-4 object-contain" src="{{ asset('storage/' . $item->product->images[0]) }}" alt="{{ $item->product->name }}">
+                    <span class="font-semibold">{{ $item->product->name }}</span>
                   </div>
                 </td>
-                <td class="py-4">₹29,999.00</td>
+                <td class="py-4">Rp{{ number_format($item->unit_amount, 0, ',', '.') }}</td>
                 <td class="py-4">
-                  <span class="text-center w-8">1</span>
+                  <span class="text-center w-8">{{ $item->quantity }}</span>
                 </td>
-                <td class="py-4">₹29,999.00</td>
+                <td class="py-4">Rp{{ number_format($item->total_amount, 0, ',', '.') }}</td>
               </tr>
-              <tr wire:key="54">
-                <td class="py-4">
-                  <div class="flex items-center">
-                    <img class="h-16 w-16 mr-4" src="http://localhost:8000/storage/products/01HND30J0P7C6MWQ1XQK7YDQKA.jpg" alt="Product image">
-                    <span class="font-semibold">Samsung Galaxy Book3</span>
-                  </div>
-                </td>
-                <td class="py-4">₹75,000.00</td>
-                <td class="py-4">
-                  <span class="text-center w-8">5</span>
-                </td>
-                <td class="py-4">₹375,000.00</td>
-              </tr>
-              <!--[if ENDBLOCK]><![endif]-->
-  
+              @endforeach
             </tbody>
           </table>
         </div>
@@ -160,38 +186,58 @@
           <h1 class="font-3xl font-bold text-slate-500 mb-3">Shipping Address</h1>
           <div class="flex justify-between items-center">
             <div>
-              <p>42227 Zoila Glens, Oshkosh, Michigan, 55928</p>
+              <p>{{ $order->address->address }}, {{ $order->address->city }}, {{ $order->address->state }}, {{ $order->address->zip }}</p>
             </div>
             <div>
               <p class="font-semibold">Phone:</p>
-              <p>023-509-0009</p>
+              <p>{{ $order->address->phone }}</p>
             </div>
           </div>
         </div>
-  
       </div>
       <div class="md:w-1/4">
         <div class="bg-white rounded-lg shadow-md p-6">
           <h2 class="text-lg font-semibold mb-4">Summary</h2>
           <div class="flex justify-between mb-2">
             <span>Subtotal</span>
-            <span>₹404,999.00</span>
+            <span>Rp{{ number_format($order->grand_total - $order->shipping_amount, 0, ',', '.') }}</span>
           </div>
           <div class="flex justify-between mb-2">
             <span>Taxes</span>
-            <span>₹0.00</span>
+            <span>Rp{{ number_format($order->grand_total * 0.10, 0, ',', '.')}}</span>
           </div>
           <div class="flex justify-between mb-2">
             <span>Shipping</span>
-            <span>₹0.00</span>
+            <span>Rp{{ number_format($order->shipping_amount, 0, ',', '.') }}</span>
           </div>
           <hr class="my-2">
           <div class="flex justify-between mb-2">
             <span class="font-semibold">Grand Total</span>
-            <span class="font-semibold">₹404,999.00</span>
+            <span class="font-semibold">Rp{{ number_format($order->grand_total, 0, ',', '.') }}</span>
           </div>
-  
         </div>
       </div>
     </div>
   </div>
+  
+  <!-- Add this at the bottom of the file, before the closing </div> tag -->
+  <script>
+    function copyTrackingAndRedirect(trackingNumber) {
+      // Copy to clipboard
+      navigator.clipboard.writeText(trackingNumber).then(function() {
+        // Show the "Copied!" message
+        const copyMessage = document.getElementById('copy-message');
+        copyMessage.classList.remove('hidden');
+        
+        // Hide the message after 2 seconds
+        setTimeout(function() {
+          copyMessage.classList.add('hidden');
+        }, 2000);
+        
+        // Redirect to cekresi.com
+        window.open('https://cekresi.com/?noresi=' + trackingNumber, '_blank');
+      }).catch(function(err) {
+        console.error('Could not copy text: ', err);
+      });
+    }
+  </script>

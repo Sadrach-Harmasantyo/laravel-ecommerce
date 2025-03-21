@@ -4,30 +4,28 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\OrderResource\Pages;
 use App\Filament\Resources\OrderResource\RelationManagers;
-use App\Filament\Resources\OrderResource\RelationManagers\AddressRelationManager;
+use App\Filament\Resources\OrderResource\Widgets\OrderStats;
 use App\Models\Order;
-use App\Models\Product;
-use Faker\Core\Number;
 use Filament\Forms;
-use Filament\Forms\Components\Group;
-use Filament\Forms\Components\Hidden;
-use Filament\Forms\Components\Placeholder;
-use Filament\Forms\Components\Repeater;
-use Filament\Forms\Components\Section;
+use Filament\Forms\Components\DateTimePicker;
+use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Section as FormsSection;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\ToggleButtons;
 use Filament\Forms\Form;
-use Filament\Forms\Get;
-use Filament\Forms\Set;
+use Filament\Infolists;
+use Filament\Infolists\Components\ImageEntry;
+use Filament\Infolists\Components\Section as InfolistsSection;
+use Filament\Infolists\Components\TextEntry;
+use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
 use Filament\Tables;
-use Filament\Tables\Columns\SelectColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Filament\Notifications\Notification;
 
 class OrderResource extends Resource
 {
@@ -41,153 +39,158 @@ class OrderResource extends Resource
     {
         return $form
             ->schema([
-                Group::make()->schema([
-                    Section::make('Order Information')->schema([
-                        Select::make('user_id')
-                            ->label('Customer')
-                            ->relationship('user', 'name')
-                            ->searchable()
-                            ->preload()
-                            ->required(),
-                        Select::make('payment_method')
-                            ->options([
-                                'stripe' => 'Stripe',
-                                'code' => 'Cash on Delivery',
-                            ])
-                            ->required(),
+                FormsSection::make('Order Information')->schema([
+                    Select::make('user_id')
+                        ->label('Customer')
+                        ->relationship('user', 'name')
+                        ->searchable()
+                        ->preload()
+                        ->required(),
+                        
+                    TextInput::make('order_number')
+                        ->label('Order Number')
+                        ->default('ORD-' . time() . '-' . rand(1000, 9999))
+                        ->required(),
+                        
+                    Select::make('status')
+                        ->label('Order Status')
+                        ->options([
+                            'new' => 'New',
+                            'processing' => 'Processing',
+                            'shipped' => 'Shipped',
+                            'delivered' => 'Delivered',
+                            'cancelled' => 'Cancelled',
+                        ])
+                        ->default('new')
+                        ->required(),
+                        
+                    Select::make('payment_method')
+                        ->label('Payment Method')
+                        ->options(function () {
+                            // Get all active banks and format them for the dropdown
+                            return \App\Models\Bank::where('is_active', true)
+                                ->get()
+                                ->pluck('name', 'name')
+                                ->toArray();
+                        })
+                        ->required(),
+                        
+                    Select::make('payment_status')
+                        ->label('Payment Status')
+                        ->options([
+                            'pending' => 'Pending',
+                            'paid' => 'Paid',
+                            'failed' => 'Failed',
+                            'refunded' => 'Refunded',
+                        ])
+                        ->default('pending')
+                        ->required(),
+                        
+                    TextInput::make('grand_total')
+                        ->label('Grand Total')
+                        ->numeric()
+                        ->required(),
+                        
+                    TextInput::make('shipping_amount')
+                        ->label('Shipping Amount')
+                        ->numeric()
+                        ->default(0)
+                        ->required(),
+                        
+                    Select::make('shipping_method')
+                        ->label('Shipping Method')
+                        ->options([
+                            'standard' => 'Standard Shipping',
+                            'express' => 'Express Shipping',
+                            'free' => 'Free Shipping',
+                        ])
+                        ->default('standard')
+                        ->required(),
 
-                        Select::make('payment_status')
-                            ->options([
-                                'pending' => 'Pending',
-                                'paid' => 'Paid',
-                                'failed' => 'Failed',
-                            ])
-                            ->default('pending')
-                            ->required(),
-
-                        ToggleButtons::make('status')
-                            ->inline()
-                            ->default('new')
-                            ->options([
-                                'new' => 'New',
-                                'processing' => 'Processing',
-                                'shipped' => 'Shipped',
-                                'delivered' => 'Delivered',
-                                'cancelled' => 'Cancelled',
-                            ])
-                            ->colors([
-                                'new' => 'info',
-                                'processing' => 'warning',
-                                'shipped' => 'success',
-                                'delivered' => 'success',
-                                'cancelled' => 'danger',
-                            ])
-                            ->icons([
-                                'new' => 'heroicon-m-sparkles',
-                                'processing' => 'heroicon-m-arrow-path',
-                                'shipped' => 'heroicon-m-truck',
-                                'delivered' => 'heroicon-m-check-badge',
-                                'cancelled' => 'heroicon-m-x-circle',
-                            ])
-                            ->required(),
-
-                        Select::make('currency')
-                            ->options([
-                                'inr' => 'INR',
-                                'usd' => 'USD',
-                                'EUR' => 'EUR',
-                                'GBP' => 'GBP',
-                            ])
-                            ->default('inr')
-                            ->required(),
-
-                        Select::make('shipping_method')
-                            ->options([
-                                'fedex_ground' => 'FedEx Ground',
-                                'fedex_express' => 'FedEx Express',
-                                'fedex_overnight' => 'FedEx Overnight',
-                                'ups_ground' => 'UPS Ground',
-                                'ups_expedited' => 'UPS Expedited',
-                                'ups_next_day_air' => 'UPS Next Day Air',
-                                'dhl_ground' => 'DHL Ground',
-                                'dhl_express' => 'DHL Express',
-                                'usps_priority_mail' => 'USPS Priority Mail',
-                                'usps_first_class_mail' => 'USPS First Class Mail',
-                                'local_courier' => 'Local Courier',
-                                'bike_messenger' => 'Bike Messenger',
-                            ]),
-
-                        Textarea::make('notes')
-                            ->columnSpanFull()
-                            ->placeholder('Enter a Note...')
-                    ])->columns(2),
-
-                    Section::make('Order Items')->schema([
-                        Repeater::make('items')
-                            ->relationship()
-                            ->schema([
-
-                                Select::make('product_id')
-                                    ->relationship('product', 'name')
-                                    ->searchable()
-                                    ->preload()
-                                    ->required()
-                                    ->distinct()
-                                    ->disableOptionsWhenSelectedInSiblingRepeaterItems()
-                                    ->columnSpan(4)
-                                    ->reactive()
-                                    ->afterStateUpdated(fn ($state, Set $set) => $set('unit_amount', optional(Product::find($state))->price ?? 0))
-
-                                    ->afterStateUpdated(fn ($state, Set $set) => $set('total_amount', optional(Product::find($state))->price ?? 0)),
-
-                                
-                                TextInput::make('quantity')
-                                    ->numeric()
-                                    ->required()
-                                    ->default(1)
-                                    ->minValue(1)
-                                    ->columnSpan(2)
-                                    ->reactive()
-                                    ->afterStateUpdated(fn ($state, Set $set, Get $get) => $set('total_amount', $state*$get('unit_amount'))),
-                                
-                                TextInput::make('unit_amount')
-                                    ->numeric()
-                                    ->required()
-                                    ->disabled()
-                                    ->dehydrated()
-                                    ->columnSpan(3),
-                                
-                                TextInput::make('total_amount')
-                                    ->numeric()
-                                    ->required()
-                                    ->dehydrated()
-                                    ->columnSpan(3)
-
-                            ])->columns(12),
-
-                            Placeholder::make('grand_total_placeholder')
-                                ->label('Grand Total')
-                                ->content(function (Get $get, Set $set){
-                                    $total = 0;
-                                    if(!$repeaters = $get('items')){
-                                        return $total;
-                                    }
-
-                                    foreach($repeaters as $key => $reapeater) {
-                                        $total += $get("items.{$key}.total_amount");
-                                    }
-
-                                    $set('grand_total', $total);
-                                    return \Illuminate\Support\Number::currency($total, 'INR');
-                                }),
-
-
-                            Hidden::make('grand_total')
-                                ->default(0)
-
-                    ]),
-
-                ])->columnSpanFull()
+                    TextInput::make('tracking_number')
+                        ->label('Tracking Number')
+                        ->helperText('Enter tracking number when order is shipped')
+                        ->visible(function (callable $get) {
+                            return $get('status') === 'shipped';
+                        }),
+                        
+                    Select::make('currency')
+                        ->label('Currency')
+                        ->options([
+                            'IDR' => 'Indonesian Rupiah (Rp)',
+                        ])
+                        ->default('IDR')
+                        ->disabled() // Make it disabled since we only use IDR
+                        ->dehydrated() // Still save the value to database
+                        ->required(),
+                        
+                    Textarea::make('notes')
+                        ->label('Order Notes')
+                        ->rows(3),
+                        
+                    FileUpload::make('payment_proof')
+                        ->label('Payment Proof')
+                        ->directory('payment_proofs')
+                        ->visibility('public')
+                        ->image(),
+                ]),
+                
+                // Change this:
+                // Section::make('Shipping Address')->schema([
+                // To this:
+                FormsSection::make('Shipping Address')->schema([
+                    Forms\Components\Repeater::make('address')
+                        ->relationship()
+                        ->schema([
+                            TextInput::make('first_name')
+                                ->required(),
+                            TextInput::make('last_name')
+                                ->required(),
+                            TextInput::make('phone')
+                                ->required(),
+                            Textarea::make('address')
+                                ->required(),
+                            TextInput::make('city')
+                                ->required(),
+                            TextInput::make('state')
+                                ->required(),
+                            TextInput::make('zip')
+                                ->required(),
+                            Select::make('type')
+                                ->options([
+                                    'shipping' => 'Shipping',
+                                    'billing' => 'Billing',
+                                ])
+                                ->default('shipping')
+                                ->required(),
+                        ])
+                        ->maxItems(1),
+                ]),
+                
+                // Change this:
+                // Section::make('Order Items')->schema([
+                // To this:
+                FormsSection::make('Order Items')->schema([
+                    Forms\Components\Repeater::make('items')
+                        ->relationship()
+                        ->schema([
+                            Select::make('product_id')
+                                ->relationship('product', 'name')
+                                ->searchable()
+                                ->preload()
+                                ->required(),
+                            TextInput::make('quantity')
+                                ->numeric()
+                                ->default(1)
+                                ->required(),
+                            TextInput::make('unit_amount')
+                                ->numeric()
+                                ->required(),
+                            TextInput::make('total_amount')
+                                ->numeric()
+                                ->required(),
+                        ]),
+                ]),
             ]);
     }
 
@@ -195,87 +198,130 @@ class OrderResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('user.name')
-                    ->label('Customer')
-                    ->sortable()
-                    ->searchable(),
-
                 TextColumn::make('grand_total')
                     ->label('Grand Total')
-                    ->numeric()
-                    ->sortable()
-                    ->money('INR'),
+                    ->money('IDR')
+                    ->sortable(),
 
-                TextColumn::make('payment_method')
-                    ->label('Payment Method')
+                TextColumn::make('id')
+                    ->label('Order ID')
                     ->searchable()
                     ->sortable(),
 
-                TextColumn::make('payment_status')
-                    ->label('Payment Status')
+                TextColumn::make('user.name')
+                    ->label('Customer')
                     ->searchable()
                     ->sortable(),
 
-                TextColumn::make('currency')
+                TextColumn::make('status')
+                    ->label('Order Status')
+                    ->badge()
+                    ->color(fn (string $state): string => match($state){
+                        'new' => 'info',
+                        'processing' => 'warning',
+                        'shipped' => 'success',
+                        'delivered' => 'success',
+                        'cancelled' => 'danger',
+                    })
+                    ->icon(fn (string $state): string => match($state){
+                        'new' => 'heroicon-m-sparkles',
+                        'processing' => 'heroicon-m-arrow-path',
+                        'shipped' => 'heroicon-m-truck',
+                        'delivered' => 'heroicon-m-check-badge',
+                        'cancelled' => 'heroicon-m-x-circle',
+                    })
                     ->sortable()
                     ->searchable(),
                 
-                TextColumn::make('shipping_method')
-                    ->label('Shipping Method')
+                TextColumn::make('tracking_number')
+                    ->label('Tracking Number')
+                    ->searchable()
+                    ->copyable()
+                    ->url(fn ($record) => $record->tracking_number ? "https://cekresi.com/?noresi={$record->tracking_number}" : null, true)
+                    ->icon('heroicon-m-truck')
+                    ->visible(fn ($record) => !empty($record->tracking_number)),
+
+                TextColumn::make('payment_method')
+                    ->label('Payment Method')
+                    ->formatStateUsing(function (string $state) {
+                        // Simply return the bank name as is
+                        return $state;
+                    })
+                    ->icon('heroicon-m-credit-card')
                     ->sortable()
                     ->searchable(),
 
-                SelectColumn::make('status')
+                TextColumn::make('payment_status')
+                    ->label('Payment Status')
+                    ->sortable()
+                    ->badge()
+                    ->searchable(),
+                
+                TextColumn::make('created_at')
+                    ->label('Order Date')
+                    ->dateTime()
+                    ->sortable()
+                    ->searchable(),
+            ])
+            ->filters([
+                Tables\Filters\SelectFilter::make('status')
                     ->options([
                         'new' => 'New',
                         'processing' => 'Processing',
                         'shipped' => 'Shipped',
                         'delivered' => 'Delivered',
                         'cancelled' => 'Cancelled',
-                    ])
+                    ]),
+                Tables\Filters\SelectFilter::make('payment_status')
+                    ->options([
+                        'pending' => 'Pending',
+                        'paid' => 'Paid',
+                        'failed' => 'Failed',
+                        'refunded' => 'Refunded',
+                    ]),
+                Tables\Filters\SelectFilter::make('user_id')
+                    ->relationship('user', 'name')
                     ->searchable()
-                    ->sortable(),
-                
-                TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-
-                TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true)
-            ])
-            ->filters([
-                //
+                    ->preload()
+                    ->label('Customer'),
             ])
             ->actions([
-                Tables\Actions\ActionGroup::make([
-                    Tables\Actions\ViewAction::make(),
-                    Tables\Actions\EditAction::make(),
-                    Tables\Actions\DeleteAction::make()->requiresConfirmation(),
-                ])
+                Tables\Actions\ViewAction::make(),
+                Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\Action::make('checkTracking')
+                    ->label('Check Tracking')
+                    ->icon('heroicon-o-map')
+                    ->color('success')
+                    ->url(fn ($record) => $record->tracking_number ? "https://cekresi.com/?noresi={$record->tracking_number}" : null, true)
+                    ->visible(fn ($record) => !empty($record->tracking_number) && $record->status === 'shipped')
+                    ->action(function (Order $record, array $data): void {
+                        $record->update([
+                            'tracking_number' => $data['tracking_number'],
+                            'status' => 'shipped', // Automatically set status to shipped
+                        ]);
+                        
+                        Notification::make()
+                            ->title('Tracking number updated')
+                            ->success()
+                            ->send();
+                    })
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
-            ])->defaultSort('created_at', 'desc');
+            ]);
     }
+
+    // Remove the infolist method completely
 
     public static function getRelations(): array
     {
         return [
-            AddressRelationManager::class
+            RelationManagers\ItemsRelationManager::class,
+            RelationManagers\AddressRelationManager::class,
         ];
-    }
-
-    public static function getNavigationBadge() : ?string {
-        return static::getModel()::count();
-    }
-
-    public static function getNavigationBadgeColor(): string|array|null {
-        return static::getModel()::count() > 10 ? 'success' : 'danger';
     }
 
     public static function getPages(): array
@@ -287,4 +333,18 @@ class OrderResource extends Resource
             'edit' => Pages\EditOrder::route('/{record}/edit'),
         ];
     }
+
+    public static function getWidgets(): array
+    {
+        return [
+            OrderStats::class,
+        ];
+    }
+
+    public static function getNavigationBadge() : ?string {
+        return static::getModel()::count();
+    }
+
 }
+
+

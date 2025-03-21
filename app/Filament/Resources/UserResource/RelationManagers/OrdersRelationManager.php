@@ -65,6 +65,17 @@ class OrdersRelationManager extends RelationManager
 
                 TextColumn::make('payment_method')
                     ->label('Payment Method')
+                    ->formatStateUsing(fn (string $state): string => match($state) {
+                        'bank_transfer' => 'Bank Transfer',
+                        'cash_on_delivery' => 'Cash on Delivery',
+                        'credit_card' => 'Credit Card',
+                        'paypal' => 'PayPal',
+                        'bca' => 'BCA',
+                        'bni' => 'BNI',
+                        'mandiri' => 'Mandiri',
+                        default => ucfirst(str_replace('_', ' ', $state)),
+                    })
+                    ->icon('heroicon-m-credit-card')
                     ->sortable()
                     ->searchable(),
 
@@ -72,6 +83,13 @@ class OrdersRelationManager extends RelationManager
                     ->label('Payment Status')
                     ->sortable()
                     ->badge()
+                    ->color(fn (string $state): string => match($state){
+                        'pending' => 'warning',
+                        'paid' => 'success',
+                        'failed' => 'danger',
+                        'refunded' => 'info',
+                        default => 'gray',
+                    })
                     ->searchable(),
                 
                 TextColumn::make('created_at')

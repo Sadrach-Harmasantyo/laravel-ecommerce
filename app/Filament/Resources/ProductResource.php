@@ -104,7 +104,7 @@ class ProductResource extends Resource
                         TextInput::make('price')
                             ->numeric()
                             ->required()
-                            ->prefix('INR')
+                            ->prefix('IDR')
                     ]),
 
                     Section::make('Associations')->schema([
@@ -158,7 +158,7 @@ class ProductResource extends Resource
                     ->sortable(),
 
                 Tables\Columns\TextColumn::make('price')
-                    ->money('INR')
+                    ->money('IDR')
                     ->sortable(),
 
                 Tables\Columns\IconColumn::make('is_active')

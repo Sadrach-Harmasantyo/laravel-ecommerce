@@ -21,7 +21,6 @@ class AddressRelationManager extends RelationManager
     {
         return $form
             ->schema([
-
                 TextInput::make('first_name')
                     ->required()
                     ->maxLength(255),
@@ -35,6 +34,10 @@ class AddressRelationManager extends RelationManager
                     ->tel()
                     ->maxLength(20),
 
+                Textarea::make('address')
+                    ->required()
+                    ->columnSpanFull(),
+
                 TextInput::make('city')
                     ->required()
                     ->maxLength(255),
@@ -43,35 +46,35 @@ class AddressRelationManager extends RelationManager
                     ->required()
                     ->maxLength(255),
 
-                TextInput::make('zip_code')
+                TextInput::make('zip')
                     ->required()
-                    ->numeric()
                     ->maxLength(10),
-
-                Textarea::make('street_address')
-                    ->required()
-                    ->columnSpanFull(),
             ]);
     }
 
     public function table(Table $table): Table
     {
         return $table
-            ->recordTitleAttribute('street_address')
+            ->recordTitleAttribute('address')
             ->columns([
-                
                 TextColumn::make('full_name')
-                    ->label('Full Name'),
+                    ->label('Full Name')
+                    ->getStateUsing(function ($record) {
+                        return $record->first_name . ' ' . $record->last_name;
+                    }),
+
+                TextColumn::make('phone'),
 
                 TextColumn::make('city'),
 
                 TextColumn::make('state'),
 
-                TextColumn::make('zip_code'),
+                TextColumn::make('zip')
+                    ->label('Zip Code'),
 
-                TextColumn::make('street_address'),
-
-                TextColumn::make('phone'),
+                TextColumn::make('address')
+                    ->label('Street Address')
+                    ->limit(30),
             ])
             ->filters([
                 //

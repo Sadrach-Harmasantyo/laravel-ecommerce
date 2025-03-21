@@ -1,72 +1,104 @@
-<section class="flex items-center font-poppins dark:bg-gray-800 ">
+<section class="flex items-center font-poppins dark:bg-gray-800">
     <div class="justify-center flex-1 max-w-6xl px-4 py-4 mx-auto bg-white border rounded-md dark:border-gray-900 dark:bg-gray-900 md:py-10 md:px-10">
       <div>
-        <h1 class="px-4 mb-8 text-2xl font-semibold tracking-wide text-gray-700 dark:text-gray-300 ">
-          Thank you. Your order has been received. </h1>
-        <div class="flex border-b border-gray-200 dark:border-gray-700  items-stretch justify-start w-full h-full px-4 mb-8 md:flex-row xl:flex-col md:space-x-6 lg:space-x-8 xl:space-x-0">
+        <h1 class="px-4 mb-8 text-2xl font-semibold tracking-wide text-gray-700 dark:text-gray-300">
+          Thank you. Your order has been received.</h1>
+        <div class="flex border-b border-gray-200 dark:border-gray-700 items-stretch justify-start w-full h-full px-4 mb-8 md:flex-row xl:flex-col md:space-x-6 lg:space-x-8 xl:space-x-0">
           <div class="flex items-start justify-start flex-shrink-0">
             <div class="flex items-center justify-center w-full pb-6 space-x-4 md:justify-start">
               <div class="flex flex-col items-start justify-start space-y-2">
                 <p class="text-lg font-semibold leading-4 text-left text-gray-800 dark:text-gray-400">
-                  Cielo Schimmel</p>
-                <p class="text-sm leading-4 text-gray-600 dark:text-gray-400">71582 Schmitt Springs</p>
-                <p class="text-sm leading-4 text-gray-600 dark:text-gray-400">Castro Valley, Delaware, 53476-0454</p>
-                <p class="text-sm leading-4 cursor-pointer dark:text-gray-400">Phone: 587-019-6103</p>
+                  {{ $customerInfo['first_name'] ?? '' }} {{ $customerInfo['last_name'] ?? '' }}</p>
+                <p class="text-sm leading-4 text-gray-600 dark:text-gray-400">{{ $customerInfo['address'] ?? '' }}</p>
+                <p class="text-sm leading-4 text-gray-600 dark:text-gray-400">{{ $customerInfo['city'] ?? '' }}, {{ $customerInfo['state'] ?? '' }}, {{ $customerInfo['zip'] ?? '' }}</p>
+                <p class="text-sm leading-4 cursor-pointer dark:text-gray-400">Phone: {{ $customerInfo['phone'] ?? '' }}</p>
               </div>
             </div>
           </div>
         </div>
         <div class="flex flex-wrap items-center pb-4 mb-10 border-b border-gray-200 dark:border-gray-700">
           <div class="w-full px-4 mb-4 md:w-1/4">
-            <p class="mb-2 text-sm leading-5 text-gray-600 dark:text-gray-400 ">
+            <p class="mb-2 text-sm leading-5 text-gray-600 dark:text-gray-400">
               Order Number: </p>
             <p class="text-base font-semibold leading-4 text-gray-800 dark:text-gray-400">
-              29</p>
+              {{ $orderNumber }}</p>
           </div>
           <div class="w-full px-4 mb-4 md:w-1/4">
-            <p class="mb-2 text-sm leading-5 text-gray-600 dark:text-gray-400 ">
+            <p class="mb-2 text-sm leading-5 text-gray-600 dark:text-gray-400">
               Date: </p>
             <p class="text-base font-semibold leading-4 text-gray-800 dark:text-gray-400">
-              17-02-2024</p>
+              {{ $orderDate }}</p>
           </div>
           <div class="w-full px-4 mb-4 md:w-1/4">
-            <p class="mb-2 text-sm font-medium leading-5 text-gray-800 dark:text-gray-400 ">
+            <p class="mb-2 text-sm font-medium leading-5 text-gray-800 dark:text-gray-400">
               Total: </p>
             <p class="text-base font-semibold leading-4 text-blue-600 dark:text-gray-400">
-              ₹157,495.00</p>
+              Rp{{ number_format($finalTotal, 0, ',', '.') }}</p>
           </div>
           <div class="w-full px-4 mb-4 md:w-1/4">
-            <p class="mb-2 text-sm leading-5 text-gray-600 dark:text-gray-400 ">
+            <p class="mb-2 text-sm leading-5 text-gray-600 dark:text-gray-400">
               Payment Method: </p>
-            <p class="text-base font-semibold leading-4 text-gray-800 dark:text-gray-400 ">
-              Cash on Delivery </p>
+            <p class="text-base font-semibold leading-4 text-gray-800 dark:text-gray-400">
+              {{ $paymentMethod }}</p>
           </div>
         </div>
         <div class="px-4 mb-10">
           <div class="flex flex-col items-stretch justify-center w-full space-y-4 md:flex-row md:space-y-0 md:space-x-8">
-            <div class="flex flex-col w-full space-y-6 ">
+            <div class="flex flex-col w-full space-y-6">
               <h2 class="mb-2 text-xl font-semibold text-gray-700 dark:text-gray-400">Order details</h2>
+              
+              <!-- Order Items -->
+              @if(count($cartItems) > 0)
+              <div class="mb-6">
+                <div class="overflow-x-auto">
+                  <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                    <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                      <tr>
+                        <th scope="col" class="px-4 py-3">Product</th>
+                        <th scope="col" class="px-4 py-3">Quantity</th>
+                        <th scope="col" class="px-4 py-3">Price</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      @foreach($cartItems as $item)
+                      <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                        <td class="px-4 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                          {{ $item['name'] ?? 'Unknown Product' }}
+                        </td>
+                        <td class="px-4 py-4">
+                          {{ $item['quantity'] ?? 1 }}
+                        </td>
+                        <td class="px-4 py-4">
+                          Rp{{ number_format($item['total_amount'] ?? 0, 0, ',', '.') }}
+                        </td>
+                      </tr>
+                      @endforeach
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              @endif
+              
               <div class="flex flex-col items-center justify-center w-full pb-4 space-y-4 border-b border-gray-200 dark:border-gray-700">
                 <div class="flex justify-between w-full">
                   <p class="text-base leading-4 text-gray-800 dark:text-gray-400">Subtotal</p>
-                  <p class="text-base leading-4 text-gray-600 dark:text-gray-400">₹157,495.00</p>
+                  <p class="text-base leading-4 text-gray-600 dark:text-gray-400">Rp{{ number_format($grandTotal, 0, ',', '.') }}</p>
                 </div>
                 <div class="flex items-center justify-between w-full">
-                  <p class="text-base leading-4 text-gray-800 dark:text-gray-400">Discount
-                  </p>
-                  <p class="text-base leading-4 text-gray-600 dark:text-gray-400">00</p>
+                  <p class="text-base leading-4 text-gray-800 dark:text-gray-400">Tax</p>
+                  <p class="text-base leading-4 text-gray-600 dark:text-gray-400">Rp{{ number_format($taxAmount, 0, ',', '.') }}</p>
                 </div>
                 <div class="flex items-center justify-between w-full">
                   <p class="text-base leading-4 text-gray-800 dark:text-gray-400">Shipping</p>
-                  <p class="text-base leading-4 text-gray-600 dark:text-gray-400">00</p>
+                  <p class="text-base leading-4 text-gray-600 dark:text-gray-400">Rp{{ number_format($shippingCost, 0, ',', '.') }}</p>
                 </div>
               </div>
               <div class="flex items-center justify-between w-full">
                 <p class="text-base font-semibold leading-4 text-gray-800 dark:text-gray-400">Total</p>
-                <p class="text-base font-semibold leading-4 text-gray-600 dark:text-gray-400">₹157,495.00</p>
+                <p class="text-base font-semibold leading-4 text-gray-600 dark:text-gray-400">Rp{{ number_format($finalTotal, 0, ',', '.') }}</p>
               </div>
             </div>
-            <div class="flex flex-col w-full px-2 space-y-4 md:px-8 ">
+            <div class="flex flex-col w-full px-2 space-y-4 md:px-8">
               <h2 class="mb-2 text-xl font-semibold text-gray-700 dark:text-gray-400">Shipping</h2>
               <div class="flex items-start justify-between w-full">
                 <div class="flex items-center justify-center space-x-2">
@@ -78,20 +110,32 @@
                   </div>
                   <div class="flex flex-col items-center justify-start">
                     <p class="text-lg font-semibold leading-6 text-gray-800 dark:text-gray-400">
-                      Delivery<br><span class="text-sm font-normal">Delivery with 24 Hours</span>
+                      Delivery<br><span class="text-sm font-normal">Delivery within 24 Hours</span>
                     </p>
                   </div>
                 </div>
-                <p class="text-lg font-semibold leading-6 text-gray-800 dark:text-gray-400">00</p>
+                <p class="text-lg font-semibold leading-6 text-gray-800 dark:text-gray-400">Rp{{ number_format($shippingCost, 0, ',', '.') }}</p>
+                </div>
+                
+                <!-- Payment Proof Section -->
+                @if(isset($orderInfo['payment_proof']))
+                <div class="mt-6">
+                  <h2 class="mb-2 text-xl font-semibold text-gray-700 dark:text-gray-400">Payment Proof</h2>
+                  <div class="flex justify-center">
+                    <img src="{{ asset('storage/' . $orderInfo['payment_proof']) }}" alt="Payment Proof" class="max-w-full h-auto max-h-64 rounded-lg shadow-md">
+                  </div>
+                </div>
+                @endif
+                <!-- End Payment Proof Section -->
               </div>
             </div>
           </div>
         </div>
         <div class="flex items-center justify-start gap-4 px-4 mt-6 ">
-          <a href="/products" class="w-full text-center px-4 py-2 text-blue-500 border border-blue-500 rounded-md md:w-auto hover:text-white hover:bg-blue-600 dark:border-gray-700 dark:hover:bg-gray-700 dark:text-gray-300">
+          <a href="{{ route('all-products') }}" class="w-full text-center px-4 py-2 text-blue-500 border border-blue-500 rounded-md md:w-auto hover:text-white hover:bg-blue-600 dark:border-gray-700 dark:hover:bg-gray-700 dark:text-gray-300">
             Go back shopping
           </a>
-          <a href="/orders" class="w-full text-center px-4 py-2 bg-blue-500 rounded-md text-gray-50 md:w-auto dark:text-gray-300 hover:bg-blue-600 dark:hover:bg-gray-700 dark:bg-gray-800">
+          <a href="{{ route('my-orders') }}" class="w-full text-center px-4 py-2 bg-blue-500 rounded-md text-gray-50 md:w-auto dark:text-gray-300 hover:bg-blue-600 dark:hover:bg-gray-700 dark:bg-gray-800">
             View My Orders
           </a>
         </div>

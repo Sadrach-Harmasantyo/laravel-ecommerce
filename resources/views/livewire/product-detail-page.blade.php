@@ -3,7 +3,7 @@
       <div class="max-w-6xl px-4 py-4 mx-auto lg:py-8 md:px-6">
         <div class="flex flex-wrap -mx-4">
           <div class="w-full mb-8 md:w-1/2 md:mb-0" x-data="{ mainImage: '{{ url('storage', $product->images[0]) }}' }">
-            <div class="sticky top-0 z-50 overflow-hidden ">
+            <div class="sticky top-0 z-10 overflow-hidden ">
               <div class="relative mb-6 lg:mb-10 lg:h-2/4 ">
                 <img x-bind:src="mainImage" alt="" class="object-cover w-full lg:h-full ">
               </div>
@@ -12,7 +12,7 @@
                 @foreach ($product->images as $image)
                 
                   <div class="w-1/2 p-2 sm:w-1/4" x-on:click="mainImage='{{ url('storage', $image) }}'">
-                    <img src="{{ url('storage', $image) }}" alt="{{ $product->name }}" class="object-cover w-full lg:h-20 cursor-pointer hover:border hover:border-blue-500">
+                    <img src="{{ url('storage', $image) }}" alt="{{ $product->name }}" class="object-contain w-full lg:h-20 cursor-pointer hover:border hover:border-blue-500">
                   </div>
 
                 @endforeach
@@ -26,7 +26,7 @@
                       </path>
                     </svg>
                   </span>
-                  <h2 class="text-lg font-bold text-gray-700 dark:text-gray-400">Free Shipping</h2>
+                  <h2 class="text-lg font-bold text-gray-700 dark:text-gray-400">Fixed Shipping (Rp 20.000)</h2>
                 </div>
               </div>
             </div>
@@ -35,9 +35,9 @@
             <div class="lg:pl-20">
               <div class="mb-8 [&>ul]:list-disc [&>ul]:ml-4">
                 <h2 class="max-w-xl mb-6 text-2xl font-bold dark:text-gray-400 md:text-4xl">{{ $product->name }}</h2>
-                <p class="inline-block mb-6 text-4xl font-bold text-gray-700 dark:text-gray-400 ">
-                  <span>{{ Number::currency($product->price, 'INR') }}</span>
-                  {{-- <span class="text-base font-normal text-gray-500 line-through dark:text-gray-400">$1800.99</span> --}}
+                <!-- Replace price display -->
+                <p class="text-3xl font-bold text-gray-900 dark:text-white">
+                    Rp{{ number_format($product->price, 0, ',', '.') }}
                 </p>
                 <p class="max-w-md text-gray-700 dark:text-gray-400">
                   {!! Str::markdown($product->short_description) !!}
@@ -56,9 +56,21 @@
                 </div>
               </div>
               <div class="flex flex-wrap items-center gap-4">
-                <button wire:click='addToCart({{ $product->id }})' class="w-full p-4 bg-blue-500 rounded-md lg:w-2/5 dark:text-gray-200 text-gray-50 hover:bg-blue-600 dark:bg-blue-500 dark:hover:bg-blue-700">
+                {{-- <button wire:click='addToCart({{ $product->id }})' class="w-full p-4 bg-blue-500 rounded-md lg:w-2/5 dark:text-gray-200 text-gray-50 hover:bg-blue-600 dark:bg-blue-500 dark:hover:bg-blue-700">
                   <span wire:loading.remove>Add to cart</span><span wire:loading>Adding...</span>
-                </button>
+                </button> --}}
+
+                @auth
+                  <button wire:click="addToCart" class="flex ml-auto text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                    <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M3 1a1 1 0 000 2h1.22l.305 1.222a.997.997 0 00.01.042l1.358 5.43-.893.892C3.74 11.846 4.632 14 6.414 14H15a1 1 0 000-2H6.414l1-1H14a1 1 0 00.894-.553l3-6A1 1 0 0017 3H6.28l-.31-1.243A1 1 0 005 1H3zM16 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM6.5 18a1.5 1.5 0 100-3 1.5 1.5 0 000 3z"></path></svg>
+                    Add to cart
+                  </button>
+                @else
+                  <a href="{{ route('login') }}" class="flex ml-auto text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                    <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M3 1a1 1 0 000 2h1.22l.305 1.222a.997.997 0 00.01.042l1.358 5.43-.893.892C3.74 11.846 4.632 14 6.414 14H15a1 1 0 000-2H6.414l1-1H14a1 1 0 00.894-.553l3-6A1 1 0 0017 3H6.28l-.31-1.243A1 1 0 005 1H3zM16 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM6.5 18a1.5 1.5 0 100-3 1.5 1.5 0 000 3z"></path></svg>
+                    Login to add to cart
+                  </a>
+                @endauth
               </div>
             </div>
           </div>

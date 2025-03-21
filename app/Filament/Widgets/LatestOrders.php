@@ -2,17 +2,13 @@
 
 namespace App\Filament\Widgets;
 
-use App\Filament\Resources\OrderResource;
 use App\Models\Order;
-use Filament\Tables\Actions\Action;
 use Filament\Tables;
-use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Filament\Widgets\TableWidget as BaseWidget;
 
 class LatestOrders extends BaseWidget
 {
-
     protected int|string|array $columnSpan = 'full';
 
     protected static ?int $sort = 2;
@@ -20,29 +16,22 @@ class LatestOrders extends BaseWidget
     public function table(Table $table): Table
     {
         return $table
-            ->query(OrderResource::getEloquentQuery())
-            ->defaultPaginationPageOption(5)
-            ->defaultSort('created_at', 'desc')
-
+            ->query(
+                Order::query()->latest()->limit(5)
+            )
             ->columns([
-
-                TextColumn::make('grand_total')
-                    ->label('Grand Total')
-                    ->money('INR')
-                    ->sortable()
-                    ->searchable(),
-
-                TextColumn::make('id')
-                    ->label('Order ID')
+                Tables\Columns\TextColumn::make('order_number')
                     ->searchable()
                     ->sortable(),
-
-                TextColumn::make('user.name')
-                    ->label('Customer')
-                    ->searchable(),
-
-                TextColumn::make('status')
-                    ->label('Order Status')
+                Tables\Columns\TextColumn::make('user.name')
+                    ->searchable()
+                    ->sortable()
+                    ->label('Customer'),
+                Tables\Columns\TextColumn::make('created_at')
+                    ->dateTime()
+                    ->sortable()
+                    ->label('Order Date'),
+                Tables\Columns\TextColumn::make('status')
                     ->badge()
                     ->color(fn (string $state): string => match($state){
                         'new' => 'info',
@@ -51,39 +40,24 @@ class LatestOrders extends BaseWidget
                         'delivered' => 'success',
                         'cancelled' => 'danger',
                     })
-                    ->icon(fn (string $state): string => match($state){
-                        'new' => 'heroicon-m-sparkles',
-                        'processing' => 'heroicon-m-arrow-path',
-                        'shipped' => 'heroicon-m-truck',
-                        'delivered' => 'heroicon-m-check-badge',
-                        'cancelled' => 'heroicon-m-x-circle',
-                    })
-                    ->sortable()
-                    ->searchable(),
-
-                TextColumn::make('payment_method')
-                    ->label('Payment Method')
-                    ->sortable()
-                    ->searchable(),
-
-                TextColumn::make('payment_status')
-                    ->label('Payment Status')
-                    ->sortable()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('payment_status')
                     ->badge()
-                    ->searchable(),
-                
-                TextColumn::make('created_at')
-                    ->label('Order Date')
-                    ->dateTime()
-                    ->sortable()
-                    ->searchable(),
-
+                    ->color(fn (string $state): string => match($state){
+                        'pending' => 'warning',
+                        'paid' => 'success',
+                        'failed' => 'danger',
+                        'refunded' => 'info',
+                    })
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('grand_total')
+                    ->money('IDR')
+                    ->sortable(),
             ])
             ->actions([
-                Action::make('View')
-                    ->url(fn (Order $record):string => OrderResource::getUrl('view', ['record' => $record]))
-                    ->color('info')
-                    ->icon('heroicon-o-eye'),
+                Tables\Actions\Action::make('view')
+                    ->url(fn (Order $record): string => route('filament.admin.resources.orders.view', $record))
+                    ->icon('heroicon-m-eye'),
             ]);
     }
 }

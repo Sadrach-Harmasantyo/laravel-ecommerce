@@ -5,25 +5,25 @@
           <!-- Grid -->
           <div class="grid md:grid-cols-2 gap-4 md:gap-8 xl:gap-20 md:items-center">
             <div>
-              <h1 class="block text-3xl font-bold text-gray-800 sm:text-4xl lg:text-6xl lg:leading-tight dark:text-white">Start your journey with <span class="text-blue-600">ByteWebster</span></h1>
+              <h1 class="block text-3xl font-bold text-gray-800 sm:text-4xl lg:text-6xl lg:leading-tight dark:text-white">Start your journey with <span class="text-blue-600">TokoOnline</span></h1>
               <p class="mt-3 text-lg text-gray-800 dark:text-gray-400">Purchase wide varities of electronics products like Smartphones, Laptops, Smartwatches, Television and many more.</p>
       
               <!-- Buttons -->
               <div class="mt-7 grid gap-3 w-full sm:inline-flex">
-                <a wire:navigate.hover class="py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600" href="/register">
+                <a class="py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600" href="#featured-products">
                   Get started
                   <svg class="flex-shrink-0 w-4 h-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="m9 18 6-6-6-6" />
                   </svg>
                 </a>
-                <a class="py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-white dark:hover:bg-gray-800 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600" href="/contact">
+                {{-- <a class="py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-white dark:hover:bg-gray-800 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600" href="/contact">
                   Contact sales team
-                </a>
+                </a> --}}
               </div>
               <!-- End Buttons -->
       
               <!-- Review -->
-              <div class="mt-6 lg:mt-10 grid grid-cols-2 gap-x-5">
+              {{-- <div class="mt-6 lg:mt-10 grid grid-cols-2 gap-x-5">
                 <!-- Review -->
                 <div class="py-5">
                   <div class="flex space-x-1">
@@ -102,7 +102,7 @@
                   </div>
                 </div>
                 <!-- End Review -->
-              </div>
+              </div> --}}
               <!-- End Review -->
             </div>
             <!-- End Col -->
@@ -141,6 +141,62 @@
         </div>
     </div>
 
+    {{-- Featured Products Section Start --}}
+    <section id="featured-products" class="py-20 bg-gray-100">
+      <div class="max-w-xl mx-auto">
+        <div class="text-center">
+          <div class="relative flex flex-col items-center">
+            <h1 class="text-5xl font-bold dark:text-gray-200">Featured <span class="text-blue-500">Products</span></h1>
+            <div class="flex w-40 mt-2 mb-6 overflow-hidden rounded">
+              <div class="flex-1 h-2 bg-blue-200"></div>
+              <div class="flex-1 h-2 bg-blue-400"></div>
+              <div class="flex-1 h-2 bg-blue-600"></div>
+            </div>
+          </div>
+          <p class="mb-12 text-base text-center text-gray-500">
+            Discover our handpicked selection of premium featured products that offer exceptional quality and value.
+          </p>
+        </div>
+      </div>
+      
+      <div class="max-w-[85rem] px-4 sm:px-6 lg:px-8 mx-auto">
+        <div class="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          @forelse($featuredProducts as $product)
+            <div class="group flex flex-col h-full bg-white border border-gray-200 shadow-sm rounded-xl dark:bg-slate-900 dark:border-gray-700 dark:shadow-slate-700/[.7]" wire:key="featured-{{ $product->id }}">
+              <div class="h-52 flex flex-col justify-center items-center bg-blue-100 rounded-t-xl">
+                <a href="{{ route('product-detail', $product->slug) }}">
+                  <img class="w-full h-52 object-contain" src="{{ url('storage', $product->images[0]) }}" alt="{{ $product->name }}">
+                </a>
+              </div>
+              <div class="p-4 md:p-6">
+                <span class="block mb-1 text-xs font-semibold uppercase text-blue-600 dark:text-blue-500">
+                  {{ $product->category->name }}
+                </span>
+                <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-300 dark:hover:text-white">
+                  {{ $product->name }}
+                </h3>
+                <p class="mt-3 text-gray-500">
+                  {{ Str::limit($product->description, 100) }}
+                </p>
+                <p class="mt-4 text-xl font-bold text-gray-900 dark:text-white">
+                  Rp{{ number_format($product->price, 0, ',', '.') }}
+                </p>
+              </div>
+              <div class="mt-auto flex border-t border-gray-200 divide-x divide-gray-200 dark:border-gray-700 dark:divide-gray-700">
+                <a href="{{ route('product-detail', $product->slug) }}" class="w-full py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-medium rounded-es-xl bg-white text-gray-800 shadow-sm hover:bg-gray-50 dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-800">
+                  View Details
+                </a>
+              </div>
+            </div>
+          @empty
+            <div class="col-span-4 text-center py-10">
+              <p class="text-gray-500 dark:text-gray-400">No featured products available at the moment.</p>
+            </div>
+          @endforelse
+        </div>
+      </div>
+  </section>
+  {{-- Featured Products Section End --}}
 
     {{-- Brand Section Start --}}
 
@@ -173,7 +229,7 @@
             
               <div class="bg-white rounded-lg shadow-md dark:bg-gray-800" wire:key="{{ $brand->id }}">
                 <a href="/products?selected_brands[0]={{ $brand->id }}" class="">
-                  <img src="{{ url('storage', $brand->image) }}" alt="{{ $brand->name }}" class="object-cover w-full h-64 rounded-t-lg">
+                  <img src="{{ url('storage', $brand->image) }}" alt="{{ $brand->name }}" class="object-contain w-full h-64 rounded-t-lg">
                 </a>
                 <div class="p-5 text-center">
                   <a href="" class="text-2xl font-bold tracking-tight text-gray-900 dark:text-gray-300">
@@ -190,7 +246,72 @@
 
     {{-- Brand Section End --}}
 
-
+    {{-- On Sale Products Section Start --}}
+    <section class="py-20 bg-orange-100">
+      <div class="max-w-xl mx-auto">
+        <div class="text-center">
+          <div class="relative flex flex-col items-center">
+            <h1 class="text-5xl font-bold dark:text-gray-200">On Sale <span class="text-blue-500">Products</span></h1>
+            <div class="flex w-40 mt-2 mb-6 overflow-hidden rounded">
+              <div class="flex-1 h-2 bg-blue-200"></div>
+              <div class="flex-1 h-2 bg-blue-400"></div>
+              <div class="flex-1 h-2 bg-blue-600"></div>
+            </div>
+          </div>
+          <p class="mb-12 text-base text-center text-gray-500">
+            Don't miss out on these amazing deals! Limited time offers on our best products.
+          </p>
+        </div>
+      </div>
+      
+      <div class="max-w-[85rem] px-4 sm:px-6 lg:px-8 mx-auto">
+        <div class="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          @forelse($onSaleProducts as $product)
+            <div class="group flex flex-col h-full bg-white border border-gray-200 shadow-sm rounded-xl dark:bg-slate-900 dark:border-gray-700 dark:shadow-slate-700/[.7]" wire:key="sale-{{ $product->id }}">
+              <div class="relative h-52 flex flex-col justify-center items-center bg-blue-100 rounded-t-xl">
+                <div class="absolute top-2 right-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded">
+                  SALE
+                </div>
+                <a href="{{ route('product-detail', $product->slug) }}">
+                  <img class="w-full h-52 object-contain" src="{{ url('storage', $product->images[0]) }}" alt="{{ $product->name }}">
+                </a>
+              </div>
+              <div class="p-4 md:p-6">
+                <span class="block mb-1 text-xs font-semibold uppercase text-blue-600 dark:text-blue-500">
+                  {{ $product->category->name }}
+                </span>
+                <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-300 dark:hover:text-white">
+                  {{ $product->name }}
+                </h3>
+                <p class="mt-3 text-gray-500">
+                  {{ Str::limit($product->description, 100) }}
+                </p>
+                <div class="mt-4 flex items-center">
+                  <p class="text-xl font-bold text-gray-900 dark:text-white">
+                    Rp{{ number_format($product->price, 0, ',', '.') }}
+                  </p>
+                  @if($product->original_price)
+                    <p class="ml-2 text-sm line-through text-gray-500">
+                      Rp{{ number_format($product->original_price, 0, ',', '.') }}
+                    </p>
+                  @endif
+                </div>
+              </div>
+              <div class="mt-auto flex border-t border-gray-200 divide-x divide-gray-200 dark:border-gray-700 dark:divide-gray-700">
+                <a href="{{ route('product-detail', $product->slug) }}" class="w-full py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-medium rounded-es-xl bg-white text-gray-800 shadow-sm hover:bg-gray-50 dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-800">
+                  View Details
+                </a>
+              </div>
+            </div>
+          @empty
+            <div class="col-span-4 text-center py-10">
+              <p class="text-gray-500 dark:text-gray-400">No products on sale available at the moment.</p>
+            </div>
+          @endforelse
+        </div>
+      </div>
+  </section>
+  {{-- On Sale Products Section End --}}
 
     {{-- Category Section Start --}}
 
@@ -604,3 +725,31 @@
     {{-- Reviews Section End --}}
 
 </div>
+
+<!-- Add this at the end of your file, before the closing </div> tag -->
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Get all links with hash
+    const links = document.querySelectorAll('a[href^="#"]');
+    
+    // Add click event to each link
+    links.forEach(link => {
+      link.addEventListener('click', function(e) {
+        e.preventDefault();
+        
+        // Get the target element
+        const targetId = this.getAttribute('href').substring(1);
+        const targetElement = document.getElementById(targetId);
+        
+        if (targetElement) {
+          // Scroll to the target element
+          window.scrollTo({
+            top: targetElement.offsetTop - 20, // Offset by 20px to give some space
+            behavior: 'smooth'
+          });
+        }
+      });
+    });
+  });
+</script>
