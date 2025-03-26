@@ -17,36 +17,45 @@ class AddressRelationManager extends RelationManager
 {
     protected static string $relationship = 'address';
 
+    protected static ?string $title = 'Alamat';
+
     public function form(Form $form): Form
     {
         return $form
             ->schema([
                 TextInput::make('first_name')
+                    ->label('Nama Depan')
                     ->required()
                     ->maxLength(255),
                 
                 TextInput::make('last_name')
+                    ->label('Nama Belakang')
                     ->required()
                     ->maxLength(255),
 
                 TextInput::make('phone')
+                    ->label('Nomor Telepon')
                     ->required()
                     ->tel()
                     ->maxLength(20),
 
                 Textarea::make('address')
+                    ->label('Alamat')
                     ->required()
                     ->columnSpanFull(),
 
                 TextInput::make('city')
+                    ->label('Kota')
                     ->required()
                     ->maxLength(255),
 
                 TextInput::make('state')
+                    ->label('Provinsi')
                     ->required()
                     ->maxLength(255),
 
                 TextInput::make('zip')
+                    ->label('Kode Pos')
                     ->required()
                     ->maxLength(10),
             ]);
@@ -58,22 +67,25 @@ class AddressRelationManager extends RelationManager
             ->recordTitleAttribute('address')
             ->columns([
                 TextColumn::make('full_name')
-                    ->label('Full Name')
+                    ->label('Nama Lengkap')
                     ->getStateUsing(function ($record) {
                         return $record->first_name . ' ' . $record->last_name;
                     }),
 
-                TextColumn::make('phone'),
+                TextColumn::make('phone')
+                    ->label('Nomor Telepon'),
 
-                TextColumn::make('city'),
+                TextColumn::make('city')
+                    ->label('Kota'),
 
-                TextColumn::make('state'),
+                TextColumn::make('state')
+                    ->label('Provinsi'),
 
                 TextColumn::make('zip')
-                    ->label('Zip Code'),
+                    ->label('Kode Pos'),
 
                 TextColumn::make('address')
-                    ->label('Street Address')
+                    ->label('Alamat')
                     ->limit(30),
             ])
             ->filters([

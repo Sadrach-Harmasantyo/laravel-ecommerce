@@ -11,7 +11,7 @@
                     <div class="flex items-center text-sm text-gray-500 mb-4">
                         <span>{{ $blog->published_at->format('M d, Y') }}</span>
                         <span class="mx-2">•</span>
-                        <span>By {{ $blog->user->name }}</span>
+                        <span>Oleh {{ $blog->user->name }}</span>
                     </div>
                     
                     <h1 class="text-2xl md:text-3xl font-bold text-gray-800 mb-6">{{ $blog->title }}</h1>
@@ -41,7 +41,7 @@
             <!-- Related Posts -->
             <div class="bg-white rounded-xl shadow-md overflow-hidden mb-6">
                 <div class="p-6">
-                    <h3 class="text-xl font-bold text-gray-800 mb-4">Related Posts</h3>
+                    <h3 class="text-xl font-bold text-gray-800 mb-4">Artikel Terkait</h3>
                     
                     @if($relatedBlogs->count() > 0)
                         <div class="space-y-4">
@@ -66,7 +66,7 @@
                             @endforeach
                         </div>
                     @else
-                        <p class="text-gray-500">No related posts found.</p>
+                        <p class="text-gray-500">Tidak ada artikel terkait yang ditemukan.</p>
                     @endif
                 </div>
             </div>
@@ -76,7 +76,7 @@
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
                 </svg>
-                Back to All Posts
+                Kembali ke Semua Artikel
             </a>
         </div>
     </div>

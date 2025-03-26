@@ -32,6 +32,10 @@ class ProductResource extends Resource
 
     protected static ?int $navigationSort = 4;
 
+    protected static ?string $modelLabel = 'Produk';
+    
+    protected static ?string $pluralModelLabel = 'Produk';
+
     public static function form(Form $form): Form
     {
         return $form
@@ -40,7 +44,7 @@ class ProductResource extends Resource
                     Section::make('Product Information')->schema([
 
                         TextInput::make('name')
-                            ->label('Product Name')
+                            ->label('Nama')
                             ->required()
                             ->maxLength(255)
                             ->live(onBlur: true)
@@ -60,12 +64,12 @@ class ProductResource extends Resource
 
                         MarkdownEditor::make('description')
                             ->columnSpanFull()
-                            ->label('Long Description')
+                            ->label('Deskripsi Panjang')
                             ->fileAttachmentsDirectory('products'),
 
                         MarkdownEditor::make('short_description')
                             ->columnSpanFull()
-                            ->label('Short Description')
+                            ->label('Deskripsi Pendek')
                             ->fileAttachmentsDirectory('products'),
 
                         TextInput::make('sku')
@@ -76,23 +80,27 @@ class ProductResource extends Resource
                             
                     ])->columns(2),
 
-                    Section::make('Images')->schema([
+                    Section::make('Gambar')->schema([
                         FileUpload::make('images')
+                            ->label('Gambar')
                             ->multiple()
                             ->directory('products')
                             ->maxFiles(5)
                             ->reorderable()
                     ]),
 
-                    Section::make('SEO Data')->schema([
+                    Section::make('Data SEO')->schema([
                         
                         TextInput::make('meta_title')
+                            ->label('Judul Meta')
                             ->maxLength(255),
 
                         Textarea::make('meta_description')
+                            ->label('Deskripsi Meta')
                             ->autosize(),
 
                         TextInput::make('meta_keywords')
+                            ->label('Kata Kunci Meta')
                             ->maxLength(255),
 
                     ])
@@ -100,22 +108,25 @@ class ProductResource extends Resource
 
                 Group::make()->schema([
 
-                    Section::make('Price')->schema([
+                    Section::make('Harga')->schema([
                         TextInput::make('price')
+                            ->label('Harga')
                             ->numeric()
                             ->required()
                             ->prefix('IDR')
                     ]),
 
-                    Section::make('Associations')->schema([
+                    Section::make('Hubungan')->schema([
 
                         Select::make('category_id')
+                            ->label('Kategori')
                             ->required()
                             ->searchable()
                             ->preload()
                             ->relationship('category', 'name'),
 
                         Select::make('brand_id')
+                            ->label('Merek')
                             ->required()
                             ->searchable()
                             ->preload()
@@ -125,17 +136,21 @@ class ProductResource extends Resource
                     Section::make('Status')->schema([
 
                         Toggle::make('in_stock')
+                            ->label('Stok')
                             ->required()
                             ->default(true),
 
                         Toggle::make('is_active')
+                            ->label('Aktif')
                             ->required()
                             ->default(true),
 
                         Toggle::make('is_featured')
+                            ->label('Unggulan')
                             ->required(),
 
                         Toggle::make('on_sale')
+                            ->label('Diskon')
                             ->required(),
 
                     ])
@@ -149,28 +164,36 @@ class ProductResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')
+                    ->label('Nama')
                     ->searchable(),
 
                 Tables\Columns\TextColumn::make('category.name')
+                    ->label('Kategori')
                     ->sortable(),
 
                 Tables\Columns\TextColumn::make('brand.name')
+                    ->label('Merek')
                     ->sortable(),
 
                 Tables\Columns\TextColumn::make('price')
+                    ->label('Harga')
                     ->money('IDR')
                     ->sortable(),
 
                 Tables\Columns\IconColumn::make('is_active')
+                    ->label('Aktif')
                     ->boolean(),
 
                 Tables\Columns\IconColumn::make('is_featured')
+                    ->label('Unggulan')
                     ->boolean(),
 
                 Tables\Columns\IconColumn::make('in_stock')
+                    ->label('Stok')
                     ->boolean(),
 
                 Tables\Columns\IconColumn::make('on_sale')
+                    ->label('Diskon')
                     ->boolean(),
 
                 Tables\Columns\TextColumn::make('created_at')

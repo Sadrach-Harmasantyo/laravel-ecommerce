@@ -1,5 +1,5 @@
 <div class="w-full max-w-[85rem] py-10 px-4 sm:px-6 lg:px-8 mx-auto">
-    <h1 class="text-4xl font-bold text-slate-500">Order Details</h1>
+    <h1 class="text-4xl font-bold text-slate-500">Detail Pesanan</h1>
   
     <!-- Grid -->
     <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mt-5">
@@ -18,7 +18,7 @@
           <div class="grow">
             <div class="flex items-center gap-x-2">
               <p class="text-xs uppercase tracking-wide text-gray-500">
-                Customer
+                Pelanggan
               </p>
             </div>
             <div class="mt-1 flex items-center gap-x-2">
@@ -44,7 +44,7 @@
           <div class="grow">
             <div class="flex items-center gap-x-2">
               <p class="text-xs uppercase tracking-wide text-gray-500">
-                Order Date
+                Tanggal Pemesanan
               </p>
             </div>
             <div class="mt-1 flex items-center gap-x-2">
@@ -70,7 +70,7 @@
           <div class="grow">
             <div class="flex items-center gap-x-2">
               <p class="text-xs uppercase tracking-wide text-gray-500">
-                Order Status
+                Status Pemesanan
               </p>
             </div>
             <div class="mt-1 flex items-center gap-x-2">
@@ -99,7 +99,7 @@
           <div class="grow">
             <div class="flex items-center gap-x-2">
               <p class="text-xs uppercase tracking-wide text-gray-500">
-                Tracking Number
+                Nomor Resi
               </p>
             </div>
             <div class="mt-1 flex items-center gap-x-2">
@@ -132,7 +132,7 @@
           <div class="grow">
             <div class="flex items-center gap-x-2">
               <p class="text-xs uppercase tracking-wide text-gray-500">
-                Payment Status
+                Status Pembayaran
               </p>
             </div>
             <div class="mt-1 flex items-center gap-x-2">
@@ -156,9 +156,9 @@
           <table class="w-full">
             <thead>
               <tr>
-                <th class="text-left font-semibold">Product</th>
-                <th class="text-left font-semibold">Price</th>
-                <th class="text-left font-semibold">Quantity</th>
+                <th class="text-left font-semibold">Produk</th>
+                <th class="text-left font-semibold">Harga</th>
+                <th class="text-left font-semibold">Jumlah</th>
                 <th class="text-left font-semibold">Total</th>
               </tr>
             </thead>
@@ -183,13 +183,13 @@
         </div>
   
         <div class="bg-white overflow-x-auto rounded-lg shadow-md p-6 mb-4">
-          <h1 class="font-3xl font-bold text-slate-500 mb-3">Shipping Address</h1>
+          <h1 class="font-3xl font-bold text-slate-500 mb-3">Alamat Pengiriman</h1>
           <div class="flex justify-between items-center">
             <div>
               <p>{{ $order->address->address }}, {{ $order->address->city }}, {{ $order->address->state }}, {{ $order->address->zip }}</p>
             </div>
             <div>
-              <p class="font-semibold">Phone:</p>
+              <p class="font-semibold">Telp. :</p>
               <p>{{ $order->address->phone }}</p>
             </div>
           </div>
@@ -197,22 +197,22 @@
       </div>
       <div class="md:w-1/4">
         <div class="bg-white rounded-lg shadow-md p-6">
-          <h2 class="text-lg font-semibold mb-4">Summary</h2>
+          <h2 class="text-lg font-semibold mb-4">Ringkasan</h2>
           <div class="flex justify-between mb-2">
             <span>Subtotal</span>
             <span>Rp{{ number_format($order->grand_total - $order->shipping_amount, 0, ',', '.') }}</span>
           </div>
           <div class="flex justify-between mb-2">
-            <span>Taxes</span>
+            <span>Pajak</span>
             <span>Rp{{ number_format($order->grand_total * 0.10, 0, ',', '.')}}</span>
           </div>
           <div class="flex justify-between mb-2">
-            <span>Shipping</span>
+            <span>Pengiriman</span>
             <span>Rp{{ number_format($order->shipping_amount, 0, ',', '.') }}</span>
           </div>
           <hr class="my-2">
           <div class="flex justify-between mb-2">
-            <span class="font-semibold">Grand Total</span>
+            <span class="font-semibold">Total Keseluruhan</span>
             <span class="font-semibold">Rp{{ number_format($order->grand_total, 0, ',', '.') }}</span>
           </div>
         </div>

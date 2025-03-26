@@ -4,7 +4,7 @@
         <div class="flex flex-wrap mb-24 -mx-3">
           <div class="w-full pr-2 lg:w-1/4 lg:block">
             <div class="p-4 mb-5 bg-white border border-gray-200 dark:border-gray-900 dark:bg-gray-900">
-              <h2 class="text-2xl font-bold dark:text-gray-400"> Categories</h2>
+              <h2 class="text-2xl font-bold dark:text-gray-400"> Kategori</h2>
               <div class="w-16 pb-2 mb-6 border-b border-rose-600 dark:border-gray-400"></div>
               <ul>
 
@@ -23,7 +23,7 @@
   
             </div>
             <div class="p-4 mb-5 bg-white border border-gray-200 dark:bg-gray-900 dark:border-gray-900">
-              <h2 class="text-2xl font-bold dark:text-gray-400">Brand</h2>
+              <h2 class="text-2xl font-bold dark:text-gray-400">Merek</h2>
               <div class="w-16 pb-2 mb-6 border-b border-rose-600 dark:border-gray-400"></div>
               <ul>
 
@@ -41,21 +41,21 @@
               </ul>
             </div>
             <div class="p-4 mb-5 bg-white border border-gray-200 dark:bg-gray-900 dark:border-gray-900">
-              <h2 class="text-2xl font-bold dark:text-gray-400">Product Status</h2>
+              <h2 class="text-2xl font-bold dark:text-gray-400">Status Produk</h2>
               <div class="w-16 pb-2 mb-6 border-b border-rose-600 dark:border-gray-400"></div>
               <ul>
 
                 <li class="mb-4">
                   <label for="featured" class="flex items-center dark:text-gray-300">
                     <input type="checkbox" id="featured" wire:model.live="featured" value="1" class="w-4 h-4 mr-2">
-                    <span class="text-lg dark:text-gray-400">Featured Products</span>
+                    <span class="text-lg dark:text-gray-400">Product Unggulan</span>
                   </label>
                 </li>
 
                 <li class="mb-4">
                   <label for="on_sale" class="flex items-center dark:text-gray-300">
                     <input type="checkbox" id="on_sale" value="1" wire:model.live="on_sale" class="w-4 h-4 mr-2">
-                    <span class="text-lg dark:text-gray-400">On Sale</span>
+                    <span class="text-lg dark:text-gray-400">Produk Diskon</span>
                   </label>
                 </li>
 
@@ -63,12 +63,12 @@
             </div>
   
             <div class="p-4 mb-5 bg-white border border-gray-200 dark:bg-gray-900 dark:border-gray-900">
-              <h2 class="text-2xl font-bold dark:text-gray-400">Price</h2>
+              <h2 class="text-2xl font-bold dark:text-gray-400">Harga</h2>
               <div class="w-16 pb-2 mb-6 border-b border-rose-600 dark:border-gray-400"></div>
               <div class="flex flex-col gap-3">
-                <label for="min-price" class="text-lg">Min. Price</label>
+                <label for="min-price" class="text-lg">Harga Min.</label>
                 <input id="min-price" type="number" wire:model.live="min_price" placeholder="Min Price" class="text-lg border border-gray-200 rounded-md py-2 px-4">
-                <label for="max-price" class="text-lg">Max. Price</label>
+                <label for="max-price" class="text-lg">Harga Maks.</label>
                 <input id="max-price" type="number" wire:model.live="max_price" placeholder="Max Price" class="text-lg border border-gray-200 rounded-md py-2 px-4">
               </div>
             </div>
@@ -80,12 +80,12 @@
               <div class="items-center justify-between hidden px-3 py-2 bg-gray-100 md:flex dark:bg-gray-900 ">
                 <div class="flex items-center justify-between w-full gap-3">
 
-                  <input type="text" name="search" placeholder="Search product" class="text-lg border border-gray-200 rounded-md py-2 px-4 w-full" wire:model.live="search">
+                  <input type="text" name="search" placeholder="Cari produk" class="text-lg border border-gray-200 rounded-md py-2 px-4 w-full" wire:model.live="search">
                   
                   <select wire:model.live="sort" class="block w-40 text-base bg-gray-100 cursor-pointer dark:text-gray-400 dark:bg-gray-900">
 
-                    <option value="latest">Sort by latest</option>
-                    <option value="price">Sort by Price</option>
+                    <option value="latest">Urutkan terbaru</option>
+                    <option value="price">Urutkan harga</option>
 
                   </select>
                   
@@ -104,12 +104,12 @@
                       </a>
                       @if($product->on_sale)
                         <div class="absolute top-2 right-2 bg-red-500 text-white text-sm font-bold px-2 py-1 rounded">
-                          SALE
+                          DISKON
                         </div>
                       @endif
                       @if($product->is_featured)
                         <div class="absolute top-2 right-2 bg-blue-500 text-white text-sm font-bold px-2 py-1 rounded">
-                          FEATURED
+                          UNGGULAN
                         </div>
                       @endif
                     </div>
@@ -146,7 +146,7 @@
                     </div> --}}
                     <div class="mt-auto flex border-t border-gray-200 divide-x divide-gray-200 dark:border-gray-700 dark:divide-gray-700">
                       <a href="{{ route('product-detail', $product->slug) }}" class="w-full py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-medium rounded-es-xl bg-white text-gray-800 shadow-sm hover:bg-gray-50 dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-800">
-                        View Details
+                        Lihat Detail
                       </a>
                     </div>
                   </div>
