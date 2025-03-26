@@ -216,6 +216,16 @@
           <span class="font-semibold">Rp{{ number_format($order->grand_total, 0, ',', '.') }}</span>
         </div>
       </div>
+      @if($order->status === 'shipped')
+      <div class="bg-white rounded-lg shadow-md p-6">
+        <button
+          wire:click="confirmDelivery({{ $order->id }})"
+          class="w-full bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600"
+          onclick="confirm('Apakah Anda yakin pesanan telah diterima?') || event.stopImmediatePropagation()">
+          Konfirmasi Pesanan Diterima
+        </button>
+      </div>
+      @endif
     </div>
   </div>
 </div>

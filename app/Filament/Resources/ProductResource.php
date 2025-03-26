@@ -42,7 +42,7 @@ class ProductResource extends Resource
         return $form
             ->schema([
                 Group::make()->schema([
-                    Section::make('Product Information')->schema([
+                    Section::make('Informasi Produk')->schema([
 
                         TextInput::make('name')
                             ->label('Nama')
@@ -199,7 +199,7 @@ class ProductResource extends Resource
                             ->label('Harga')
                             ->numeric()
                             ->required()
-                            ->helperText('Default price. Variants can have different prices.')
+                            ->helperText('Harga varian dapat berbeda.')
                             ->prefix('IDR')
                     ]),
 

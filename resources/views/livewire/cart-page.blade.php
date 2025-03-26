@@ -25,7 +25,7 @@
                       <span class="font-semibold">{{ $item['name'] }}</span>
                       @if(isset($item['variant_id']))
                       <div class="text-sm text-gray-500">
-                        Variant: {{ $item['variant_name'] ?? 'Default' }}
+                        Varian: {{ $item['variant_name'] ?? 'Default' }}
                         @if($item['variant_value'])
                         ({{ $item['variant_value'] }})
                         @endif
@@ -45,7 +45,7 @@
                 </td>
                 <td class="py-4">Rp{{ number_format($item['price'] * $item['quantity'], 0, ',', '.') }}</td>
                 <td>
-                  <button wire:click="removeItem('{{ $item['product_id'] }}', '{{ $item['variant_id'] ?? '' }}')" class="bg-slate-300 border-2 border-slate-400 rounded-lg px-3 py-1 hover:bg-red-500 hover:text-white hover:border-red-700">Remove</button>
+                  <button wire:click="removeItem('{{ $item['product_id'] }}', '{{ $item['variant_id'] ?? '' }}')" class="bg-slate-300 border-2 border-slate-400 rounded-lg px-3 py-1 hover:bg-red-500 hover:text-white hover:border-red-700">Hapus</button>
                 </td>
               </tr>
               @endforeach
