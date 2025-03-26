@@ -36,7 +36,7 @@ class OrderResource extends Resource
     protected static ?int $navigationSort = 5;
 
     protected static ?string $modelLabel = 'Pesanan';
-    
+
     protected static ?string $pluralModelLabel = 'Pesanan';
 
     public static function form(Form $form): Form
@@ -50,12 +50,12 @@ class OrderResource extends Resource
                         ->searchable()
                         ->preload()
                         ->required(),
-                        
+
                     TextInput::make('order_number')
                         ->label('Nomor Pesanan')
                         ->default('ORD-' . time() . '-' . rand(1000, 9999))
                         ->required(),
-                        
+
                     Select::make('status')
                         ->label('Status Pesanan')
                         ->options([
@@ -67,7 +67,7 @@ class OrderResource extends Resource
                         ])
                         ->default('new')
                         ->required(),
-                        
+
                     Select::make('payment_method')
                         ->label('Metode Pembayaran')
                         ->options(function () {
@@ -78,7 +78,7 @@ class OrderResource extends Resource
                                 ->toArray();
                         })
                         ->required(),
-                        
+
                     Select::make('payment_status')
                         ->label('Status Pembayaran')
                         ->options([
@@ -89,18 +89,18 @@ class OrderResource extends Resource
                         ])
                         ->default('pending')
                         ->required(),
-                        
+
                     TextInput::make('grand_total')
                         ->label('Total Keseluruhan')
                         ->numeric()
                         ->required(),
-                        
+
                     TextInput::make('shipping_amount')
                         ->label('Pengiriman')
                         ->numeric()
                         ->default(0)
                         ->required(),
-                        
+
                     Select::make('shipping_method')
                         ->label('Metode Pengiriman')
                         ->options([
@@ -117,7 +117,7 @@ class OrderResource extends Resource
                         ->visible(function (callable $get) {
                             return $get('status') === 'shipped';
                         }),
-                        
+
                     Select::make('currency')
                         ->label('Mata Uang')
                         ->options([
@@ -127,18 +127,18 @@ class OrderResource extends Resource
                         ->disabled() // Make it disabled since we only use IDR
                         ->dehydrated() // Still save the value to database
                         ->required(),
-                        
+
                     Textarea::make('notes')
                         ->label('Catatan Pesanan')
                         ->rows(3),
-                        
+
                     FileUpload::make('payment_proof')
                         ->label('Bukti Pembayaran')
                         ->directory('payment_proofs')
                         ->visibility('public')
                         ->image(),
                 ]),
-                
+
                 // Change this:
                 // Section::make('Shipping Address')->schema([
                 // To this:
@@ -179,7 +179,7 @@ class OrderResource extends Resource
                         ])
                         ->maxItems(1),
                 ]),
-                
+
                 // Change this:
                 // Section::make('Order Items')->schema([
                 // To this:
@@ -234,21 +234,21 @@ class OrderResource extends Resource
                 TextColumn::make('status')
                     ->label('Status Pesanan')
                     ->badge()
-                    ->color(fn (string $state): string => match($state){
+                    ->color(fn(string $state): string => match ($state) {
                         'new' => 'info',
                         'processing' => 'warning',
                         'shipped' => 'success',
                         'delivered' => 'success',
                         'cancelled' => 'danger',
                     })
-                    ->icon(fn (string $state): string => match($state){
+                    ->icon(fn(string $state): string => match ($state) {
                         'new' => 'heroicon-m-sparkles',
                         'processing' => 'heroicon-m-arrow-path',
                         'shipped' => 'heroicon-m-truck',
                         'delivered' => 'heroicon-m-check-badge',
                         'cancelled' => 'heroicon-m-x-circle',
                     })
-                    ->formatStateUsing(fn (string $state): string => match($state){
+                    ->formatStateUsing(fn(string $state): string => match ($state) {
                         'new' => 'Baru',
                         'processing' => 'Diproses',
                         'shipped' => 'Dikirim',
@@ -258,14 +258,14 @@ class OrderResource extends Resource
                     })
                     ->sortable()
                     ->searchable(),
-                
+
                 TextColumn::make('tracking_number')
                     ->label('Nomor Resi')
                     ->searchable()
                     ->copyable()
-                    ->url(fn ($record) => $record->tracking_number ? "https://cekresi.com/?noresi={$record->tracking_number}" : null, true)
+                    ->url(fn($record) => $record->tracking_number ? "https://cekresi.com/?noresi={$record->tracking_number}" : null, true)
                     ->icon('heroicon-m-truck')
-                    ->visible(fn ($record) => !empty($record->tracking_number)),
+                    ->visible(fn($record) => !empty($record->tracking_number)),
 
                 TextColumn::make('payment_method')
                     ->label('Metode Pembayaran')
@@ -279,13 +279,13 @@ class OrderResource extends Resource
 
                 TextColumn::make('payment_status')
                     ->label('Status Pembayaran')
-                    ->color(fn (string $state): string => match($state){
+                    ->color(fn(string $state): string => match ($state) {
                         'pending' => 'warning',
                         'paid' => 'success',
                         'failed' => 'danger',
                         'refunded' => 'info',
                     })
-                    ->formatStateUsing(fn (string $state): string => match($state){
+                    ->formatStateUsing(fn(string $state): string => match ($state) {
                         'pending' => 'Tertunda',
                         'paid' => 'Dibayar',
                         'failed' => 'Gagal',
@@ -295,7 +295,7 @@ class OrderResource extends Resource
                     ->sortable()
                     ->badge()
                     ->searchable(),
-                
+
                 TextColumn::make('created_at')
                     ->label('Tanggal Dibuat')
                     ->dateTime()
@@ -335,14 +335,14 @@ class OrderResource extends Resource
                     ->label('Cek Resi')
                     ->icon('heroicon-o-map')
                     ->color('success')
-                    ->url(fn ($record) => $record->tracking_number ? "https://cekresi.com/?noresi={$record->tracking_number}" : null, true)
-                    ->visible(fn ($record) => !empty($record->tracking_number) && $record->status === 'shipped')
+                    ->url(fn($record) => $record->tracking_number ? "https://cekresi.com/?noresi={$record->tracking_number}" : null, true)
+                    ->visible(fn($record) => !empty($record->tracking_number) && $record->status === 'shipped')
                     ->action(function (Order $record, array $data): void {
                         $record->update([
                             'tracking_number' => $data['tracking_number'],
                             'status' => 'shipped', // Automatically set status to shipped
                         ]);
-                        
+
                         Notification::make()
                             ->title('Tracking number updated')
                             ->success()
@@ -383,10 +383,8 @@ class OrderResource extends Resource
         ];
     }
 
-    public static function getNavigationBadge() : ?string {
+    public static function getNavigationBadge(): ?string
+    {
         return static::getModel()::count();
     }
-
 }
-
-

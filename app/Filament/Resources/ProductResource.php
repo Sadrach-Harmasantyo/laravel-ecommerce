@@ -9,6 +9,7 @@ use Filament\Forms;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Group;
 use Filament\Forms\Components\MarkdownEditor;
+use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
@@ -33,7 +34,7 @@ class ProductResource extends Resource
     protected static ?int $navigationSort = 4;
 
     protected static ?string $modelLabel = 'Produk';
-    
+
     protected static ?string $pluralModelLabel = 'Produk';
 
     public static function form(Form $form): Form
@@ -41,7 +42,7 @@ class ProductResource extends Resource
         return $form
             ->schema([
                 Group::make()->schema([
-                    Section::make('Product Information')->schema([
+                    Section::make('Informasi Produk')->schema([
 
                         TextInput::make('name')
                             ->label('Nama')
@@ -77,8 +78,93 @@ class ProductResource extends Resource
                             ->required()
                             ->maxLength(255)
                             ->columnSpanFull(),
-                            
                     ])->columns(2),
+
+                    Section::make('Varian Produk')->schema([
+                        Repeater::make('variants')
+                            ->relationship()
+                            ->schema([
+                                TextInput::make('name')
+                                    ->label('Nama Varian (e.g., Ukuran)')
+                                    ->required()
+                                    ->maxLength(255),
+
+                                TextInput::make('value')
+                                    ->label('Nilai Varian (e.g., XL, M, S)')
+                                    ->required()
+                                    ->maxLength(255),
+
+                                TextInput::make('sku')
+                                    ->label('SKU Varian')
+                                    ->required()
+                                    ->maxLength(255),
+
+                                TextInput::make('price')
+                                    ->label('Harga')
+                                    ->numeric()
+                                    ->required()
+                                    ->prefix('IDR'),
+
+                                TextInput::make('stock_quantity')
+                                    ->label('Jumlah Stok')
+                                    ->numeric()
+                                    ->required()
+                                    ->default(0),
+
+                                Toggle::make('is_active')
+                                    ->label('Aktif')
+                                    ->required()
+                                    ->default(true),
+                            ])
+                            ->columns(3)
+                            ->defaultItems(1)
+                            ->reorderable()
+                            ->collapsible()
+                            ->columnSpanFull(),
+                    ]),
+
+                    Section::make('Varian Produk')->schema([
+                        Repeater::make('variants')
+                            ->relationship()
+                            ->schema([
+                                TextInput::make('name')
+                                    ->label('Nama Varian (e.g., Ukuran)')
+                                    ->required()
+                                    ->maxLength(255),
+
+                                TextInput::make('value')
+                                    ->label('Nilai Varian (e.g., XL, M, S)')
+                                    ->required()
+                                    ->maxLength(255),
+
+                                TextInput::make('sku')
+                                    ->label('SKU Varian')
+                                    ->required()
+                                    ->maxLength(255),
+
+                                TextInput::make('price')
+                                    ->label('Harga')
+                                    ->numeric()
+                                    ->required()
+                                    ->prefix('IDR'),
+
+                                TextInput::make('stock_quantity')
+                                    ->label('Jumlah Stok')
+                                    ->numeric()
+                                    ->required()
+                                    ->default(0),
+
+                                Toggle::make('is_active')
+                                    ->label('Aktif')
+                                    ->required()
+                                    ->default(true),
+                            ])
+                            ->columns(3)
+                            ->defaultItems(1)
+                            ->reorderable()
+                            ->collapsible()
+                            ->columnSpanFull(),
+                    ]),
 
                     Section::make('Gambar')->schema([
                         FileUpload::make('images')
@@ -90,7 +176,7 @@ class ProductResource extends Resource
                     ]),
 
                     Section::make('Data SEO')->schema([
-                        
+
                         TextInput::make('meta_title')
                             ->label('Judul Meta')
                             ->maxLength(255),
@@ -113,6 +199,7 @@ class ProductResource extends Resource
                             ->label('Harga')
                             ->numeric()
                             ->required()
+                            ->helperText('Harga varian dapat berbeda.')
                             ->prefix('IDR')
                     ]),
 
@@ -138,7 +225,8 @@ class ProductResource extends Resource
                         Toggle::make('in_stock')
                             ->label('Stok')
                             ->required()
-                            ->default(true),
+                            ->default(true)
+                            ->helperText('Status produk utama. Cek stok varian untuk detail.'),
 
                         Toggle::make('is_active')
                             ->label('Aktif')
@@ -179,6 +267,10 @@ class ProductResource extends Resource
                     ->label('Harga')
                     ->money('IDR')
                     ->sortable(),
+
+                Tables\Columns\TextColumn::make('variants_count')
+                    ->counts('variants')
+                    ->label('Varian'),
 
                 Tables\Columns\IconColumn::make('is_active')
                     ->label('Aktif')
@@ -242,7 +334,7 @@ class ProductResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            RelationManagers\VariantsRelationManager::class,
         ];
     }
 
