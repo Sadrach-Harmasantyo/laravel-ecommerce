@@ -18,6 +18,8 @@ class OrdersRelationManager extends RelationManager
 {
     protected static string $relationship = 'orders';
 
+    protected static ?string $title = 'Pesanan';
+
     public function form(Form $form): Form
     {
         return $form
@@ -33,18 +35,18 @@ class OrdersRelationManager extends RelationManager
             ->columns([
 
                 TextColumn::make('grand_total')
-                    ->label('Grand Total')
-                    ->money('INR')
+                    ->label('Total Pembayaran')
+                    ->money('IDR')
                     ->sortable()
                     ->searchable(),
 
                 TextColumn::make('id')
-                    ->label('Order ID')
+                    ->label('ID Pesanan')
                     ->searchable()
                     ->sortable(),
 
                 TextColumn::make('status')
-                    ->label('Order Status')
+                    ->label('Status Pesanan')
                     ->badge()
                     ->color(fn (string $state): string => match($state){
                         'new' => 'info',
@@ -60,11 +62,19 @@ class OrdersRelationManager extends RelationManager
                         'delivered' => 'heroicon-m-check-badge',
                         'cancelled' => 'heroicon-m-x-circle',
                     })
+                    ->formatStateUsing(fn (string $state): string => match($state){
+                        'new' => 'Baru',
+                        'processing' => 'Diproses',
+                        'shipped' => 'Dikirim',
+                        'delivered' => 'Terkirim',
+                        'cancelled' => 'Dibatalkan',
+                        default => $state,
+                    })
                     ->sortable()
                     ->searchable(),
 
                 TextColumn::make('payment_method')
-                    ->label('Payment Method')
+                    ->label('Metode Pembayaran')
                     ->formatStateUsing(fn (string $state): string => match($state) {
                         'bank_transfer' => 'Bank Transfer',
                         'cash_on_delivery' => 'Cash on Delivery',
@@ -80,7 +90,7 @@ class OrdersRelationManager extends RelationManager
                     ->searchable(),
 
                 TextColumn::make('payment_status')
-                    ->label('Payment Status')
+                    ->label('Status Pembayaran')
                     ->sortable()
                     ->badge()
                     ->color(fn (string $state): string => match($state){
@@ -90,10 +100,17 @@ class OrdersRelationManager extends RelationManager
                         'refunded' => 'info',
                         default => 'gray',
                     })
+                    ->formatStateUsing(fn (string $state): string => match($state){
+                        'pending' => 'Tertunda',
+                        'paid' => 'Dibayar',
+                        'failed' => 'Gagal',
+                        'refunded' => 'Dikembalikan',
+                        default => $state,
+                    })
                     ->searchable(),
                 
                 TextColumn::make('created_at')
-                    ->label('Order Date')
+                    ->label('Tanggal Pesanan')
                     ->dateTime()
                     ->sortable()
                     ->searchable(),
@@ -105,12 +122,13 @@ class OrdersRelationManager extends RelationManager
                 // Tables\Actions\CreateAction::make(),
             ])
             ->actions([
-                Action::make('View Order')
+                Action::make('Lihat')
                     ->url(fn (Order $record):string => OrderResource::getUrl('view', ['record' => $record]))
                     ->color('info')
                     ->icon('heroicon-o-eye'),
                     
-                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\DeleteAction::make()
+                    ->label('Hapus'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

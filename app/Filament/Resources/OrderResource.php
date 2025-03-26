@@ -35,25 +35,29 @@ class OrderResource extends Resource
 
     protected static ?int $navigationSort = 5;
 
+    protected static ?string $modelLabel = 'Pesanan';
+    
+    protected static ?string $pluralModelLabel = 'Pesanan';
+
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 FormsSection::make('Order Information')->schema([
                     Select::make('user_id')
-                        ->label('Customer')
+                        ->label('Pelanggan')
                         ->relationship('user', 'name')
                         ->searchable()
                         ->preload()
                         ->required(),
                         
                     TextInput::make('order_number')
-                        ->label('Order Number')
+                        ->label('Nomor Pesanan')
                         ->default('ORD-' . time() . '-' . rand(1000, 9999))
                         ->required(),
                         
                     Select::make('status')
-                        ->label('Order Status')
+                        ->label('Status Pesanan')
                         ->options([
                             'new' => 'New',
                             'processing' => 'Processing',
@@ -65,7 +69,7 @@ class OrderResource extends Resource
                         ->required(),
                         
                     Select::make('payment_method')
-                        ->label('Payment Method')
+                        ->label('Metode Pembayaran')
                         ->options(function () {
                             // Get all active banks and format them for the dropdown
                             return \App\Models\Bank::where('is_active', true)
@@ -76,7 +80,7 @@ class OrderResource extends Resource
                         ->required(),
                         
                     Select::make('payment_status')
-                        ->label('Payment Status')
+                        ->label('Status Pembayaran')
                         ->options([
                             'pending' => 'Pending',
                             'paid' => 'Paid',
@@ -87,18 +91,18 @@ class OrderResource extends Resource
                         ->required(),
                         
                     TextInput::make('grand_total')
-                        ->label('Grand Total')
+                        ->label('Total Keseluruhan')
                         ->numeric()
                         ->required(),
                         
                     TextInput::make('shipping_amount')
-                        ->label('Shipping Amount')
+                        ->label('Pengiriman')
                         ->numeric()
                         ->default(0)
                         ->required(),
                         
                     Select::make('shipping_method')
-                        ->label('Shipping Method')
+                        ->label('Metode Pengiriman')
                         ->options([
                             'standard' => 'Standard Shipping',
                             'express' => 'Express Shipping',
@@ -108,14 +112,14 @@ class OrderResource extends Resource
                         ->required(),
 
                     TextInput::make('tracking_number')
-                        ->label('Tracking Number')
+                        ->label('Nomor Resi')
                         ->helperText('Enter tracking number when order is shipped')
                         ->visible(function (callable $get) {
                             return $get('status') === 'shipped';
                         }),
                         
                     Select::make('currency')
-                        ->label('Currency')
+                        ->label('Mata Uang')
                         ->options([
                             'IDR' => 'Indonesian Rupiah (Rp)',
                         ])
@@ -125,11 +129,11 @@ class OrderResource extends Resource
                         ->required(),
                         
                     Textarea::make('notes')
-                        ->label('Order Notes')
+                        ->label('Catatan Pesanan')
                         ->rows(3),
                         
                     FileUpload::make('payment_proof')
-                        ->label('Payment Proof')
+                        ->label('Bukti Pembayaran')
                         ->directory('payment_proofs')
                         ->visibility('public')
                         ->image(),
@@ -138,25 +142,34 @@ class OrderResource extends Resource
                 // Change this:
                 // Section::make('Shipping Address')->schema([
                 // To this:
-                FormsSection::make('Shipping Address')->schema([
+                FormsSection::make('Alamat Pengiriman')->schema([
                     Forms\Components\Repeater::make('address')
+                        ->label('Alamat')
                         ->relationship()
                         ->schema([
                             TextInput::make('first_name')
+                                ->label('Nama Depan')
                                 ->required(),
                             TextInput::make('last_name')
+                                ->label('Nama Belakang')
                                 ->required(),
                             TextInput::make('phone')
+                                ->label('Nomor Telepon')
                                 ->required(),
                             Textarea::make('address')
+                                ->label('Alamat')
                                 ->required(),
                             TextInput::make('city')
+                                ->label('Kota')
                                 ->required(),
                             TextInput::make('state')
+                                ->label('Provinsi')
                                 ->required(),
                             TextInput::make('zip')
+                                ->label('Kode Pos')
                                 ->required(),
                             Select::make('type')
+                                ->label('Tipe')
                                 ->options([
                                     'shipping' => 'Shipping',
                                     'billing' => 'Billing',
@@ -170,23 +183,28 @@ class OrderResource extends Resource
                 // Change this:
                 // Section::make('Order Items')->schema([
                 // To this:
-                FormsSection::make('Order Items')->schema([
+                FormsSection::make('Barang Pesanan')->schema([
                     Forms\Components\Repeater::make('items')
+                        ->label('Barang')
                         ->relationship()
                         ->schema([
                             Select::make('product_id')
+                                ->label('Produk')
                                 ->relationship('product', 'name')
                                 ->searchable()
                                 ->preload()
                                 ->required(),
                             TextInput::make('quantity')
+                                ->label('Jumlah')
                                 ->numeric()
                                 ->default(1)
                                 ->required(),
                             TextInput::make('unit_amount')
+                                ->label('Harga Satuan')
                                 ->numeric()
                                 ->required(),
                             TextInput::make('total_amount')
+                                ->label('Total')
                                 ->numeric()
                                 ->required(),
                         ]),
@@ -199,22 +217,22 @@ class OrderResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('grand_total')
-                    ->label('Grand Total')
+                    ->label('Total Keseluruhan')
                     ->money('IDR')
                     ->sortable(),
 
                 TextColumn::make('id')
-                    ->label('Order ID')
+                    ->label('ID Pesanan')
                     ->searchable()
                     ->sortable(),
 
                 TextColumn::make('user.name')
-                    ->label('Customer')
+                    ->label('Pelanggan')
                     ->searchable()
                     ->sortable(),
 
                 TextColumn::make('status')
-                    ->label('Order Status')
+                    ->label('Status Pesanan')
                     ->badge()
                     ->color(fn (string $state): string => match($state){
                         'new' => 'info',
@@ -230,11 +248,19 @@ class OrderResource extends Resource
                         'delivered' => 'heroicon-m-check-badge',
                         'cancelled' => 'heroicon-m-x-circle',
                     })
+                    ->formatStateUsing(fn (string $state): string => match($state){
+                        'new' => 'Baru',
+                        'processing' => 'Diproses',
+                        'shipped' => 'Dikirim',
+                        'delivered' => 'Terkirim',
+                        'cancelled' => 'Dibatalkan',
+                        default => $state,
+                    })
                     ->sortable()
                     ->searchable(),
                 
                 TextColumn::make('tracking_number')
-                    ->label('Tracking Number')
+                    ->label('Nomor Resi')
                     ->searchable()
                     ->copyable()
                     ->url(fn ($record) => $record->tracking_number ? "https://cekresi.com/?noresi={$record->tracking_number}" : null, true)
@@ -242,7 +268,7 @@ class OrderResource extends Resource
                     ->visible(fn ($record) => !empty($record->tracking_number)),
 
                 TextColumn::make('payment_method')
-                    ->label('Payment Method')
+                    ->label('Metode Pembayaran')
                     ->formatStateUsing(function (string $state) {
                         // Simply return the bank name as is
                         return $state;
@@ -252,13 +278,26 @@ class OrderResource extends Resource
                     ->searchable(),
 
                 TextColumn::make('payment_status')
-                    ->label('Payment Status')
+                    ->label('Status Pembayaran')
+                    ->color(fn (string $state): string => match($state){
+                        'pending' => 'warning',
+                        'paid' => 'success',
+                        'failed' => 'danger',
+                        'refunded' => 'info',
+                    })
+                    ->formatStateUsing(fn (string $state): string => match($state){
+                        'pending' => 'Tertunda',
+                        'paid' => 'Dibayar',
+                        'failed' => 'Gagal',
+                        'refunded' => 'Dikembalikan',
+                        default => $state,
+                    })
                     ->sortable()
                     ->badge()
                     ->searchable(),
                 
                 TextColumn::make('created_at')
-                    ->label('Order Date')
+                    ->label('Tanggal Dibuat')
                     ->dateTime()
                     ->sortable()
                     ->searchable(),
@@ -286,11 +325,14 @@ class OrderResource extends Resource
                     ->label('Customer'),
             ])
             ->actions([
-                Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\ViewAction::make()
+                    ->label('Lihat'),
+                Tables\Actions\EditAction::make()
+                    ->label('Edit'),
+                Tables\Actions\DeleteAction::make()
+                    ->label('Hapus'),
                 Tables\Actions\Action::make('checkTracking')
-                    ->label('Check Tracking')
+                    ->label('Cek Resi')
                     ->icon('heroicon-o-map')
                     ->color('success')
                     ->url(fn ($record) => $record->tracking_number ? "https://cekresi.com/?noresi={$record->tracking_number}" : null, true)

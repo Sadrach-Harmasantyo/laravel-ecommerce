@@ -1,5 +1,5 @@
 <div class="w-full max-w-[85rem] py-10 px-4 sm:px-6 lg:px-8 mx-auto">
-  <h1 class="text-4xl font-bold text-slate-500">My Orders</h1>
+  <h1 class="text-4xl font-bold text-slate-500">Pesanan Saya</h1>
   
   @if($orders->count() > 0)
   <div class="flex flex-col bg-white p-5 rounded mt-4 shadow-lg">
@@ -9,12 +9,12 @@
           <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
             <thead>
               <tr>
-                <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">Order #</th>
-                <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">Date</th>
-                <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">Order Status</th>
-                <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">Payment Status</th>
-                <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">Order Amount</th>
-                <th scope="col" class="px-6 py-3 text-end text-xs font-medium text-gray-500 uppercase">Action</th>
+                <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">Pesanan #</th>
+                <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">Tanggal</th>
+                <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">Status Pesanan</th>
+                <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">Status Pembayaran</th>
+                <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">Jumlah Pesanan</th>
+                <th scope="col" class="px-6 py-3 text-end text-xs font-medium text-gray-500 uppercase">Tindakan</th>
               </tr>
             </thead>
             <tbody>
@@ -40,7 +40,7 @@
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">Rp{{ number_format($order->grand_total, 0, ',', '.') }}</td>
                 <td class="px-6 py-4 whitespace-nowrap text-end text-sm font-medium">
-                  <a href="{{ route('my-order-detail', $order->id) }}" class="bg-slate-600 text-white py-2 px-4 rounded-md hover:bg-slate-500">View Details</a>
+                  <a href="{{ route('my-order-detail', $order->id) }}" class="bg-slate-600 text-white py-2 px-4 rounded-md hover:bg-slate-500">Lihat Detail</a>
                 </td>
               </tr>
               @endforeach
@@ -55,9 +55,9 @@
     <svg class="w-16 h-16 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
     </svg>
-    <h2 class="mt-4 text-xl font-semibold text-gray-600">You haven't placed any orders yet</h2>
-    <p class="mt-2 text-gray-500">Start shopping to see your orders here</p>
-    <a href="{{ route('home') }}" class="mt-4 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">Shop Now</a>
+    <h2 class="mt-4 text-xl font-semibold text-gray-600">Anda belum melakukan pemesanan apa pun</h2>
+    <p class="mt-2 text-gray-500">Mulailah berbelanja untuk melihat pesanan Anda di sini</p>
+    <a href="{{ route('home') }}" class="mt-4 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">Belanja Sekarang</a>
   </div>
   @endif
 </div>

@@ -5,13 +5,13 @@
           <!-- Grid -->
           <div class="grid md:grid-cols-2 gap-4 md:gap-8 xl:gap-20 md:items-center">
             <div>
-              <h1 class="block text-3xl font-bold text-gray-800 sm:text-4xl lg:text-6xl lg:leading-tight dark:text-white">Start your journey with <span class="text-blue-600">TokoOnline</span></h1>
-              <p class="mt-3 text-lg text-gray-800 dark:text-gray-400">Purchase wide varities of electronics products like Smartphones, Laptops, Smartwatches, Television and many more.</p>
+              <h1 class="block text-3xl font-bold text-gray-800 sm:text-4xl lg:text-6xl lg:leading-tight dark:text-white">Mulai perjalanan Anda dengan <span class="text-blue-600">TokoOnline</span></h1>
+              <p class="mt-3 text-lg text-gray-800 dark:text-gray-400">Belanja berbagai macam produk elektronik seperti Smartphone, Laptop, Smartwatch, Televisi dan banyak lagi.</p>
       
               <!-- Buttons -->
               <div class="mt-7 grid gap-3 w-full sm:inline-flex">
                 <a class="py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600" href="#featured-products">
-                  Get started
+                  Mulai Sekarang
                   <svg class="flex-shrink-0 w-4 h-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="m9 18 6-6-6-6" />
                   </svg>
@@ -146,7 +146,7 @@
       <div class="max-w-xl mx-auto">
         <div class="text-center">
           <div class="relative flex flex-col items-center">
-            <h1 class="text-5xl font-bold dark:text-gray-200">Featured <span class="text-blue-500">Products</span></h1>
+            <h1 class="text-5xl font-bold dark:text-gray-200">Produk <span class="text-blue-500">Unggulan</span></h1>
             <div class="flex w-40 mt-2 mb-6 overflow-hidden rounded">
               <div class="flex-1 h-2 bg-blue-200"></div>
               <div class="flex-1 h-2 bg-blue-400"></div>
@@ -154,7 +154,7 @@
             </div>
           </div>
           <p class="mb-12 text-base text-center text-gray-500">
-            Discover our handpicked selection of premium featured products that offer exceptional quality and value.
+            Temukan pilihan produk unggulan premium pilihan kami yang menawarkan kualitas yang baik.
           </p>
         </div>
       </div>
@@ -184,13 +184,13 @@
               </div>
               <div class="mt-auto flex border-t border-gray-200 divide-x divide-gray-200 dark:border-gray-700 dark:divide-gray-700">
                 <a href="{{ route('product-detail', $product->slug) }}" class="w-full py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-medium rounded-es-xl bg-white text-gray-800 shadow-sm hover:bg-gray-50 dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-800">
-                  View Details
+                  Lihat Detail
                 </a>
               </div>
             </div>
           @empty
             <div class="col-span-4 text-center py-10">
-              <p class="text-gray-500 dark:text-gray-400">No featured products available at the moment.</p>
+              <p class="text-gray-500 dark:text-gray-400">Tidak ada produk unggulan yang tersedia saat ini.</p>
             </div>
           @endforelse
         </div>
@@ -204,7 +204,7 @@
         <div class="max-w-xl mx-auto">
           <div class="text-center ">
             <div class="relative flex flex-col items-center">
-              <h1 class="text-5xl font-bold dark:text-gray-200"> Browse Popular<span class="text-blue-500"> Brands
+              <h1 class="text-5xl font-bold dark:text-gray-200"> Jelajahi Merek <span class="text-blue-500"> Populer
                 </span> </h1>
               <div class="flex w-40 mt-2 mb-6 overflow-hidden rounded">
                 <div class="flex-1 h-2 bg-blue-200">
@@ -216,9 +216,7 @@
               </div>
             </div>
             <p class="mb-12 text-base text-center text-gray-500">
-              Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus magni eius eaque?
-              Pariatur
-              numquam, odio quod nobis ipsum ex cupiditate?
+              Temukan koleksi eksklusif dari merek-merek terpopuler dan terbaik serta telah dipercaya oleh banyak orang.
             </p>
           </div>
         </div>
@@ -251,7 +249,7 @@
       <div class="max-w-xl mx-auto">
         <div class="text-center">
           <div class="relative flex flex-col items-center">
-            <h1 class="text-5xl font-bold dark:text-gray-200">On Sale <span class="text-blue-500">Products</span></h1>
+            <h1 class="text-5xl font-bold dark:text-gray-200">Produk <span class="text-blue-500">Diskon</span></h1>
             <div class="flex w-40 mt-2 mb-6 overflow-hidden rounded">
               <div class="flex-1 h-2 bg-blue-200"></div>
               <div class="flex-1 h-2 bg-blue-400"></div>
@@ -259,7 +257,7 @@
             </div>
           </div>
           <p class="mb-12 text-base text-center text-gray-500">
-            Don't miss out on these amazing deals! Limited time offers on our best products.
+            Jangan lewatkan penawaran luar biasa ini! Penawaran waktu terbatas untuk produk terbaik kami.
           </p>
         </div>
       </div>
@@ -270,7 +268,7 @@
             <div class="group flex flex-col h-full bg-white border border-gray-200 shadow-sm rounded-xl dark:bg-slate-900 dark:border-gray-700 dark:shadow-slate-700/[.7]" wire:key="sale-{{ $product->id }}">
               <div class="relative h-52 flex flex-col justify-center items-center bg-blue-100 rounded-t-xl">
                 <div class="absolute top-2 right-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded">
-                  SALE
+                  DISKON
                 </div>
                 <a href="{{ route('product-detail', $product->slug) }}">
                   <img class="w-full h-52 object-contain" src="{{ url('storage', $product->images[0]) }}" alt="{{ $product->name }}">
@@ -319,7 +317,7 @@
         <div class="max-w-xl mx-auto">
           <div class="text-center ">
             <div class="relative flex flex-col items-center">
-              <h1 class="text-5xl font-bold dark:text-gray-200"> Browse <span class="text-blue-500"> Categories
+              <h1 class="text-5xl font-bold dark:text-gray-200"> Jelajahi <span class="text-blue-500"> Kategori
                 </span> </h1>
               <div class="flex w-40 mt-2 mb-6 overflow-hidden rounded">
                 <div class="flex-1 h-2 bg-blue-200">
@@ -331,9 +329,7 @@
               </div>
             </div>
             <p class="mb-12 text-base text-center text-gray-500">
-              Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus magni eius eaque?
-              Pariatur
-              numquam, odio quod nobis ipsum ex cupiditate?
+              Temukan beragam kategori pilihan kami dan temukan produk berkualitas tinggi yang dirancang untuk memenuhi segala kebutuhan Anda. 
             </p>
           </div>
         </div>
@@ -380,7 +376,7 @@
           <div class="max-w-xl mx-auto">
             <div class="text-center ">
               <div class="relative flex flex-col items-center">
-                <h1 class="text-5xl font-bold dark:text-gray-200"> Customer <span class="text-blue-500"> Reviews
+                <h1 class="text-5xl font-bold dark:text-gray-200"> Ulasan<span class="text-blue-500"> Pelanggan
                   </span> </h1>
                 <div class="flex w-40 mt-2 mb-6 overflow-hidden rounded">
                   <div class="flex-1 h-2 bg-blue-200">
@@ -392,9 +388,8 @@
                 </div>
               </div>
               <p class="mb-12 text-base text-center text-gray-500">
-                Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus magni eius eaque?
-                Pariatur
-                numquam, odio quod nobis ipsum ex cupiditate?
+                Lihat apa yang pelanggan kami katakan tentang pengalaman berbelanja mereka.
+                Kami selalu berusaha memberikan layanan terbaik untuk kepuasan pelanggan.
               </p>
             </div>
           </div>
@@ -412,12 +407,12 @@
                     <p class="text-xs text-gray-500 dark:text-gray-400">Web Designer</p>
                   </div>
                 </div>
-                <p class="px-6 text-base font-medium text-gray-600 dark:text-gray-400"> Joined 12, SEP , 2022
+                <p class="px-6 text-base font-medium text-gray-600 dark:text-gray-400"> Bergabung 12 Sep 2022
                 </p>
               </div>
               <p class="px-6 mb-6 text-base text-gray-500 dark:text-gray-400">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Autem cupiditate similique,
-                iure minus sed fugit obcaecati minima quam reiciendis dicta!
+                Saya sangat puas dengan produk yang saya beli. Kualitasnya sangat baik dan pengiriman cepat.
+                Pelayanan pelanggan juga sangat responsif. Pasti akan berbelanja lagi di sini!
               </p>
               <div class="flex flex-wrap justify-between pt-4 border-t dark:border-gray-700">
                 <div class="flex px-6 mb-2 md:mb-0">
@@ -455,11 +450,11 @@
                       </a>
                     </li>
                   </ul>
-                  <h2 class="text-sm text-gray-500 dark:text-gray-400">Rating:<span class="font-semibold text-gray-600 dark:text-gray-300">
-                      3.0</span>
+                  <h2 class="text-sm text-gray-500 dark:text-gray-400">Penilaian:<span class="font-semibold text-gray-600 dark:text-gray-300">
+                      4.0</span>
                   </h2>
                 </div>
-                <div class="flex items-center px-6 space-x-1 text-sm font-medium text-gray-500 dark:text-gray-400">
+                {{-- <div class="flex items-center px-6 space-x-1 text-sm font-medium text-gray-500 dark:text-gray-400">
                   <div class="flex items-center">
                     <div class="flex mr-3 text-sm text-gray-700 dark:text-gray-400">
                       <a href="#">
@@ -478,7 +473,7 @@
                         </svg>Reply</a>
                     </div>
                   </div>
-                </div>
+                </div> --}}
               </div>
             </div>
             <div class="py-6 bg-white rounded-md shadow dark:bg-gray-900">
@@ -493,12 +488,12 @@
                     <p class="text-xs text-gray-500 dark:text-gray-400">Manager</p>
                   </div>
                 </div>
-                <p class="px-6 text-base font-medium text-gray-600 dark:text-gray-400"> Joined 12, SEP , 2022
+                <p class="px-6 text-base font-medium text-gray-600 dark:text-gray-400"> Bergabung 25 Nov 2022
                 </p>
               </div>
               <p class="px-6 mb-6 text-base text-gray-500 dark:text-gray-400">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Autem cupiditate similique,
-                iure minus sed fugit obcaecati minima quam reiciendis dicta!
+                Produk berkualitas tinggi dengan harga yang sangat bersaing. Proses pembelian sangat mudah
+                dan pengiriman tepat waktu. Sangat merekomendasikan toko online ini!
               </p>
               <div class="flex flex-wrap justify-between pt-4 border-t dark:border-gray-700">
                 <div class="flex px-6 mb-2 md:mb-0">
@@ -535,12 +530,20 @@
                         </svg>
                       </a>
                     </li>
+                    <li>
+                      <a href="#">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="w-4 mr-1 text-blue-500 dark:text-blue-400 bi bi-star-fill" viewBox="0 0 16 16">
+                          <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z">
+                          </path>
+                        </svg>
+                      </a>
+                    </li>
                   </ul>
-                  <h2 class="text-sm text-gray-500 dark:text-gray-400">Rating:<span class="font-semibold text-gray-600 dark:text-gray-300">
-                      3.0</span>
+                  <h2 class="text-sm text-gray-500 dark:text-gray-400">Penilaian:<span class="font-semibold text-gray-600 dark:text-gray-300">
+                      5.0</span>
                   </h2>
                 </div>
-                <div class="flex items-center px-6 space-x-1 text-sm font-medium text-gray-500 dark:text-gray-400">
+                {{-- <div class="flex items-center px-6 space-x-1 text-sm font-medium text-gray-500 dark:text-gray-400">
                   <div class="flex items-center">
                     <div class="flex mr-3 text-sm text-gray-700 dark:text-gray-400">
                       <a href="#"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="w-4 h-4 mr-1 text-blue-400 bi bi-hand-thumbs-up-fill" viewBox="0 0 16 16">
@@ -557,7 +560,7 @@
                         </svg>Reply</a>
                     </div>
                   </div>
-                </div>
+                </div> --}}
               </div>
             </div>
             <div class="py-6 bg-white rounded-md shadow dark:bg-gray-900">
@@ -572,12 +575,12 @@
                     <p class="text-xs text-gray-500 dark:text-gray-400">Marketing Officer</p>
                   </div>
                 </div>
-                <p class="px-6 text-base font-medium text-gray-600 dark:text-gray-400"> Joined 12, SEP , 2022
+                <p class="px-6 text-base font-medium text-gray-600 dark:text-gray-400"> Bergabung 10 Jan 2023
                 </p>
               </div>
               <p class="px-6 mb-6 text-base text-gray-500 dark:text-gray-400">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Autem cupiditate similique,
-                iure minus sed fugit obcaecati minima quam reiciendis dicta!
+                Produk berkualitas tinggi dengan harga yang sangat bersaing. Proses pembelian sangat mudah
+                dan pengiriman tepat waktu. Sangat merekomendasikan toko online ini!
               </p>
               <div class="flex flex-wrap justify-between pt-4 border-t dark:border-gray-700">
                 <div class="flex px-6 mb-2 md:mb-0">
@@ -614,12 +617,20 @@
                         </svg>
                       </a>
                     </li>
+                    <li>
+                      <a href="#">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="w-4 mr-1 text-blue-500 dark:text-blue-400 bi bi-star-fill" viewBox="0 0 16 16">
+                          <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z">
+                          </path>
+                        </svg>
+                      </a>
+                    </li>
                   </ul>
-                  <h2 class="text-sm text-gray-500 dark:text-gray-400">Rating:<span class="font-semibold text-gray-600 dark:text-gray-300">
-                      3.0</span>
+                  <h2 class="text-sm text-gray-500 dark:text-gray-400">Penilaian:<span class="font-semibold text-gray-600 dark:text-gray-300">
+                      5.0</span>
                   </h2>
                 </div>
-                <div class="flex items-center px-6 space-x-1 text-sm font-medium text-gray-500 dark:text-gray-400">
+                {{-- <div class="flex items-center px-6 space-x-1 text-sm font-medium text-gray-500 dark:text-gray-400">
                   <div class="flex items-center">
                     <div class="flex mr-3 text-sm text-gray-700 dark:text-gray-400">
                       <a href="#"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="w-4 h-4 mr-1 text-blue-400 bi bi-hand-thumbs-up-fill" viewBox="0 0 16 16">
@@ -636,7 +647,7 @@
                         </svg>Reply</a>
                     </div>
                   </div>
-                </div>
+                </div> --}}
               </div>
             </div>
             <div class="py-6 bg-white rounded-md shadow dark:bg-gray-900">
@@ -651,12 +662,12 @@
                     <p class="text-xs text-gray-500 dark:text-gray-400">Java Programmer</p>
                   </div>
                 </div>
-                <p class="px-6 text-base font-medium text-gray-600 dark:text-gray-400"> Joined 12, SEP , 2022
+                <p class="px-6 text-base font-medium text-gray-600 dark:text-gray-400"> Bergabung 17 Ags 2023
                 </p>
               </div>
               <p class="px-6 mb-6 text-base text-gray-500 dark:text-gray-400">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Autem cupiditate similique,
-                iure minus sed fugit obcaecati minima quam reiciendis dicta!
+                Saya sangat puas dengan produk yang saya beli. Kualitasnya sangat baik dan pengiriman cepat.
+                Pelayanan pelanggan juga sangat responsif. Pasti akan berbelanja lagi di sini!
               </p>
               <div class="flex flex-wrap justify-between pt-4 border-t dark:border-gray-700">
                 <div class="flex px-6 mb-2 md:mb-0">
@@ -694,11 +705,11 @@
                       </a>
                     </li>
                   </ul>
-                  <h2 class="text-sm text-gray-500 dark:text-gray-400">Rating:<span class="font-semibold text-gray-600 dark:text-gray-300">
-                      3.0</span>
+                  <h2 class="text-sm text-gray-500 dark:text-gray-400">Penilaian:<span class="font-semibold text-gray-600 dark:text-gray-300">
+                      4.0</span>
                   </h2>
                 </div>
-                <div class="flex items-center px-6 space-x-1 text-sm font-medium text-gray-500 dark:text-gray-400">
+                {{-- <div class="flex items-center px-6 space-x-1 text-sm font-medium text-gray-500 dark:text-gray-400">
                   <div class="flex items-center">
                     <div class="flex mr-3 text-sm text-gray-700 dark:text-gray-400">
                       <a href="#"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="w-4 h-4 mr-1 text-blue-400 bi bi-hand-thumbs-up-fill" viewBox="0 0 16 16">
@@ -715,7 +726,7 @@
                         </svg>Reply</a>
                     </div>
                   </div>
-                </div>
+                </div> --}}
               </div>
             </div>
           </div>

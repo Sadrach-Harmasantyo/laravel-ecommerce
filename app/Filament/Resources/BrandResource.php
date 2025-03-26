@@ -27,6 +27,10 @@ class BrandResource extends Resource
 
     // protected static ?string $recordTitleAttribute = 'name';
 
+    protected static ?string $modelLabel = 'Merek';
+    
+    protected static ?string $pluralModelLabel = 'Merek';
+
     protected static ?int $navigationSort = 3;
 
     public static function form(Form $form): Form
@@ -37,6 +41,7 @@ class BrandResource extends Resource
                     Grid::make()
                         ->schema([
                             TextInput::make('name')
+                                ->label('Nama')
                                 ->required()
                                 ->maxLength(255)
                                 ->live(onBlur:true)
@@ -51,10 +56,12 @@ class BrandResource extends Resource
                         ]),
 
                         FileUpload::make('image')
+                            ->label('Gambar')
                             ->image()
                             ->directory('brands'),
 
                         Toggle::make('is_active')
+                            ->label('Aktif')
                             ->required()
                             ->default(true)
                 ])
@@ -66,9 +73,11 @@ class BrandResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')
+                    ->label('Nama')
                     ->searchable(),
 
-                Tables\Columns\ImageColumn::make('image'),
+                Tables\Columns\ImageColumn::make('image')
+                    ->label('Gambar'),
 
                 Tables\Columns\TextColumn::make('slug')
                     ->searchable(),                
@@ -76,7 +85,8 @@ class BrandResource extends Resource
                 // Tables\Columns\IconColumn::make('is_active')
                 //     ->boolean(),
 
-                Tables\Columns\ToggleColumn::make('is_active'),
+                Tables\Columns\ToggleColumn::make('is_active')
+                    ->label('Aktif'),
 
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
@@ -93,9 +103,12 @@ class BrandResource extends Resource
             ])
             ->actions([
                 Tables\Actions\ActionGroup::make([
-                    Tables\Actions\ViewAction::make(),
+                    Tables\Actions\ViewAction::make()
+                        ->label('Lihat'),
                     Tables\Actions\EditAction::make(),
-                    Tables\Actions\DeleteAction::make()->requiresConfirmation(),
+                    Tables\Actions\DeleteAction::make()
+                        ->label('Hapus')
+                        ->requiresConfirmation(),
                 ])
             ])
             ->bulkActions([

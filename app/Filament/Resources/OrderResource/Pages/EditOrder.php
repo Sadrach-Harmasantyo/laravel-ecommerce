@@ -13,8 +13,22 @@ class EditOrder extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-            Actions\ViewAction::make(),
-            Actions\DeleteAction::make(),
+            Actions\ViewAction::make()
+                ->label('Lihat'),
+            Actions\DeleteAction::make()
+                ->label('Hapus'),
         ];
+    }
+
+    protected function getSaveFormAction(): Actions\Action
+    {
+        return parent::getSaveFormAction()
+            ->label('Simpan Perubahan');
+    }
+    
+    protected function getCancelFormAction(): Actions\Action
+    {
+        return parent::getCancelFormAction()
+            ->label('Batalkan');
     }
 }

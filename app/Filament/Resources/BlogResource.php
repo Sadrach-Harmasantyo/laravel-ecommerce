@@ -19,15 +19,24 @@ class BlogResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
 
+    protected static ?string $navigationLabel = 'Artikel';
+
+    // Tambahkan properti berikut untuk mengubah label model
+    protected static ?string $modelLabel = 'Artikel';
+    
+    // Tambahkan properti berikut untuk mengubah label plural model (header)
+    protected static ?string $pluralModelLabel = 'Artikel';
+
     // protected static ?string $navigationGroup = 'Content';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\Section::make('Blog Details')
+                Forms\Components\Section::make('Detail Artikel')
                     ->schema([
                         Forms\Components\TextInput::make('title')
+                            ->label('Judul')
                             ->required()
                             ->maxLength(255)
                             ->live(onBlur: true)
@@ -40,27 +49,30 @@ class BlogResource extends Resource
                             ->unique(Blog::class, 'slug', ignoreRecord: true),
                         
                         Forms\Components\FileUpload::make('featured_image')
+                            ->label('Gambar Unggulan')
                             ->image()
                             ->directory('blog-images')
                             ->visibility('public')
                             ->imageEditor(),
                         
                         Forms\Components\Textarea::make('excerpt')
+                            ->label('Ringkasan')
                             ->rows(3)
                             ->maxLength(500)
-                            ->helperText('A short summary of the blog post'),
+                            ->helperText('Ringkasan pendek dari artikel'),
                         
                         Forms\Components\RichEditor::make('content')
+                            ->label('Konten')
                             ->required()
                             ->columnSpanFull(),
                         
                         Forms\Components\Toggle::make('is_published')
-                            ->label('Publish')
+                            ->label('Tampilkan di halaman depan')
                             ->default(false)
-                            ->helperText('Toggle to publish the blog post'),
+                            ->helperText('Artikel akan ditampilkan di halaman depan jika diaktifkan'),
                         
                         Forms\Components\DateTimePicker::make('published_at')
-                            ->label('Publish Date')
+                            ->label('Tanggal Pembuatan')
                             ->default(now())
                             ->visible(fn (Forms\Get $get) => $get('is_published')),
 
@@ -75,22 +87,24 @@ class BlogResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\ImageColumn::make('featured_image')
-                    ->label('Image'),
+                    ->label('Gambar'),
                 
                 Tables\Columns\TextColumn::make('title')
+                    ->label('Judul')
                     ->searchable()
                     ->sortable(),
                 
                 Tables\Columns\TextColumn::make('user.name')
-                    ->label('Author')
+                    ->label('Penulis')
                     ->sortable(),
                 
                 Tables\Columns\IconColumn::make('is_published')
-                    ->label('Published')
+                    ->label('Publik')
                     ->boolean()
                     ->sortable(),
                 
                 Tables\Columns\TextColumn::make('published_at')
+                    ->label('Tanggal Pembuatan')
                     ->dateTime()
                     ->sortable(),
                 
@@ -113,8 +127,10 @@ class BlogResource extends Resource
                     ->label('Status'),
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\EditAction::make()
+                    ->label('Edit'),
+                Tables\Actions\DeleteAction::make()
+                    ->label('Hapus'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

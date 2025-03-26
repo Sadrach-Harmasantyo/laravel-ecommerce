@@ -26,6 +26,10 @@ class BankResource extends Resource
 
     // protected static ?string $navigationGroup = 'Settings';
 
+    protected static ?string $modelLabel = 'Bank';
+    
+    protected static ?string $pluralModelLabel = 'Bank';
+
     protected static ?int $navigationSort = 3;
 
     public static function form(Form $form): Form
@@ -35,18 +39,22 @@ class BankResource extends Resource
                 Section::make('Bank Information')
                     ->schema([
                         TextInput::make('name')
+                            ->label('Nama')
                             ->required()
                             ->maxLength(255),
                         TextInput::make('account_number')
+                            ->label('Nomor Rekening')
                             ->required()
                             ->maxLength(255),
                         TextInput::make('account_name')
+                            ->label('Nama Pemilik Rekening')
                             ->maxLength(255),
                         Textarea::make('description')
+                            ->label('Deskripsi')
                             ->maxLength(65535)
                             ->columnSpanFull(),
                         Toggle::make('is_active')
-                            ->label('Active')
+                            ->label('Aktif')
                             ->default(true),
                     ]),
             ]);
@@ -57,12 +65,16 @@ class BankResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('name')
+                    ->label('Nama')
                     ->searchable(),
                 TextColumn::make('account_number')
+                    ->label('Nomor Rekening')
                     ->searchable(),
                 TextColumn::make('account_name')
+                    ->label('Nama Pemilik Rekening')
                     ->searchable(),
                 IconColumn::make('is_active')
+                    ->label('Aktif')
                     ->boolean(),
                 TextColumn::make('created_at')
                     ->dateTime()
@@ -78,7 +90,8 @@ class BankResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\DeleteAction::make()
+                    ->label('Hapus'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
