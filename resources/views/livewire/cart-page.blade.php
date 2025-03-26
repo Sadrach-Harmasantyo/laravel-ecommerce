@@ -1,17 +1,17 @@
 <div class="w-full max-w-[85rem] py-10 px-4 sm:px-6 lg:px-8 mx-auto" wire:poll.10s>
   <div class="container mx-auto px-4">
-    <h1 class="text-2xl font-semibold mb-4">Shopping Cart</h1>
+    <h1 class="text-2xl font-semibold mb-4">Keranjang Belanja</h1>
     <div class="flex flex-col md:flex-row gap-4">
       <div class="md:w-3/4">
         <div class="bg-white overflow-x-auto rounded-lg shadow-md p-6 mb-4">
           <table class="w-full">
             <thead>
               <tr>
-                <th class="text-left font-semibold">Product</th>
-                <th class="text-left font-semibold">Price</th>
-                <th class="text-left font-semibold">Quantity</th>
+                <th class="text-left font-semibold">Produk</th>
+                <th class="text-left font-semibold">Harga</th>
+                <th class="text-left font-semibold">Jumlah</th>
                 <th class="text-left font-semibold">Total</th>
-                <th class="text-left font-semibold">Remove</th>
+                <th class="text-left font-semibold">Hapus</th>
               </tr>
             </thead>
             <tbody>
@@ -52,7 +52,7 @@
 
               @else
               <tr>
-                <td colspan="5" class="py-4 text-center">Your cart is empty</td>
+                <td colspan="5" class="py-4 text-center">Keranjang Anda kosong</td>
               </tr>
               @endif
             </tbody>
@@ -61,17 +61,17 @@
       </div>
       <div class="md:w-1/4">
         <div class="bg-white rounded-lg shadow-md p-6">
-          <h2 class="text-lg font-semibold mb-4">Summary</h2>
+          <h2 class="text-lg font-semibold mb-4">Ringkasan</h2>
           <div class="flex justify-between mb-2">
             <span>Subtotal</span>
             <span>Rp{{ number_format($subtotal, 0, ',', '.') }}</span>
           </div>
           <div class="flex justify-between mb-2">
-            <span>Taxes</span>
+            <span>Pajak</span>
             <span>Rp{{ number_format($taxAmount,  0, ',', '.') }}</span>
           </div>
           <div class="flex justify-between mb-2">
-            <span>Shipping</span>
+            <span>Pengiriman</span>
             <span>Rp{{ number_format($shippingCost, 0, ',', '.') }}</span>
           </div>
           <hr class="my-2">
@@ -82,16 +82,16 @@
           <!-- In the cart summary section, update the checkout button -->
           <div class="mt-6">
             @auth
-            <a href="{{ route('checkout') }}" class="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700">Checkout</a>
+            <a href="{{ route('checkout') }}" class="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700">Pembayaran</a>
             @else
             <div class="text-center mb-3 text-sm text-gray-600">
-              Please login to proceed with checkout
+              Silakan login untuk melanjutkan pembayaran
             </div>
-            <a href="{{ route('login') }}" class="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700">Login to Checkout</a>
+            <a href="{{ route('login') }}" class="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700">Login untuk Pembayaran</a>
             @endauth
           </div>
           <a href="{{ route('all-products') }}" class="block text-center bg-gray-200 text-gray-800 py-2 px-4 rounded-lg mt-2 w-full hover:bg-gray-300">
-            Continue Shopping
+            Lanjutkan Belanja
           </a>
         </div>
       </div>

@@ -2,9 +2,9 @@
     <!-- Hero Section -->
     <div class="bg-gradient-to-r from-blue-100 to-cyan-100 rounded-xl p-8 md:p-12 mb-8">
         <div class="text-center">
-            <h1 class="text-4xl md:text-5xl font-bold text-gray-800 mb-4">Our Blog</h1>
+            <h1 class="text-4xl md:text-5xl font-bold text-gray-800 mb-4">Artikel Kami</h1>
             <p class="text-lg text-gray-600 max-w-3xl mx-auto">
-                Stay updated with the latest news, tips, and insights about technology and electronics.
+                Ikuti terus berita, tips, dan wawasan terkini tentang teknologi dan elektronik.
             </p>
         </div>
     </div>
@@ -37,14 +37,14 @@
                         {{ $blog->excerpt ?? Str::limit(strip_tags($blog->content), 150) }}
                     </p>
                     <a href="{{ route('blog.show', $blog->slug) }}" class="text-blue-600 font-medium hover:text-blue-800 transition-colors">
-                        Read more →
+                        Baca lanjut →
                     </a>
                 </div>
             </div>
         @empty
             <div class="col-span-3 text-center py-12">
-                <h3 class="text-xl text-gray-600">No blog posts available yet.</h3>
-                <p class="mt-2 text-gray-500">Check back soon for new content!</p>
+                <h3 class="text-xl text-gray-600">Belum ada postingan artikel yang tersedia.</h3>
+                <p class="mt-2 text-gray-500">Periksa kembali segera untuk konten baru!</p>
             </div>
         @endforelse
     </div>

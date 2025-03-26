@@ -16,7 +16,7 @@ class ViewOrder extends ViewRecord
             Actions\EditAction::make(),
 
             Actions\Action::make('checkTracking')
-                ->label('Check Tracking Status')
+                ->label('Cek Pengiriman')
                 ->icon('heroicon-o-map')
                 ->color('success')
                 ->url(fn () => $this->record->tracking_number ? "https://cekresi.com/?noresi={$this->record->tracking_number}" : null, true)

@@ -26,9 +26,9 @@
 
             <!-- Product Variant Selector -->
             <div class="mt-4">
-              <label class="block mb-2 text-lg font-semibold text-gray-700 dark:text-gray-400">Choose Variant</label>
+              <label class="block mb-2 text-lg font-semibold text-gray-700 dark:text-gray-400">Pilih varian</label>
               <select wire:model="selectedVariant" class="w-full p-2 border border-gray-300 rounded-md dark:bg-gray-900 dark:text-white">
-                <option value="" disabled selected>Select a variant</option>
+                <option value="" disabled selected>Pilih varian</option>
                 @foreach ($product->variants as $variant)
                 <option value='{{ json_encode([
             "id" => $variant->id, 
@@ -48,7 +48,7 @@
 
             <!-- Quantity Selector -->
             <div class="w-32 mt-4 mb-8">
-              <label class="block pb-1 text-xl font-semibold text-gray-700 border-b border-blue-300 dark:border-gray-600 dark:text-gray-400">Quantity</label>
+              <label class="block pb-1 text-xl font-semibold text-gray-700 border-b border-blue-300 dark:border-gray-600 dark:text-gray-400">Jumlah</label>
               <div class="relative flex flex-row w-full h-10 mt-2 bg-transparent rounded-lg">
                 <button wire:click='decreaseQty' class="w-20 h-full text-gray-600 bg-gray-300 rounded-l dark:bg-gray-900 hover:bg-gray-400">-</button>
                 <input type="number" wire:model='quantity' readonly class="flex items-center w-full text-center bg-gray-300 dark:bg-gray-900" placeholder="1">
@@ -58,9 +58,9 @@
 
             <!-- Add to Cart Button -->
             @auth
-            <button wire:click="addToCart({{ $product->id }}, {{ $selectedVariant ?? 'null' }})" class="flex ml-auto text-white bg-blue-700 hover:bg-blue-800 px-5 py-2.5 rounded-lg">Add to cart</button>
+            <button wire:click="addToCart({{ $product->id }}, {{ $selectedVariant ?? 'null' }})" class="flex ml-auto text-white bg-blue-700 hover:bg-blue-800 px-5 py-2.5 rounded-lg">Masukkan ke keranjang</button>
             @else
-            <a href="{{ route('login') }}" class="flex ml-auto text-white bg-blue-700 hover:bg-blue-800 px-5 py-2.5 rounded-lg">Login to add to cart</a>
+            <a href="{{ route('login') }}" class="flex ml-auto text-white bg-blue-700 hover:bg-blue-800 px-5 py-2.5 rounded-lg">Login Untuk Belanja</a>
             @endauth
           </div>
         </div>

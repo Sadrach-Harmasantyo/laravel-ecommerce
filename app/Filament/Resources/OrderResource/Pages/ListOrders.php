@@ -15,7 +15,8 @@ class ListOrders extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-            Actions\CreateAction::make(),
+            Actions\CreateAction::make()
+                ->label('Tambah Pesanan'),
         ];
     }
 
@@ -27,12 +28,12 @@ class ListOrders extends ListRecords
     
     public function getTabs(): array {
         return [
-            null => Tab::make('All'),
-            'new' => Tab::make()->query(fn ($query) => $query->where('status', 'new')),
-            'processing' => Tab::make()->query(fn ($query) => $query->where('status', 'processing')),
-            'shipped' => Tab::make()->query(fn ($query) => $query->where('status', 'shipped')),
-            'delivered' => Tab::make()->query(fn ($query) => $query->where('status', 'delivered')),
-            'cancelled' => Tab::make()->query(fn ($query) => $query->where('status', 'cancelled')),
+            null => Tab::make('Semua Pesanan'),
+            'Baru' => Tab::make()->query(fn ($query) => $query->where('status', 'new')),
+            'Diproses' => Tab::make()->query(fn ($query) => $query->where('status', 'processing')),
+            'Dikirim' => Tab::make()->query(fn ($query) => $query->where('status', 'shipped')),
+            'Terkirim' => Tab::make()->query(fn ($query) => $query->where('status', 'delivered')),
+            'Dibatalkan' => Tab::make()->query(fn ($query) => $query->where('status', 'cancelled')),
         ];
     }
 }

@@ -31,6 +31,12 @@ class CategoryResource extends Resource
 
     protected static ?int $navigationSort = 2;
 
+     // Tambahkan properti berikut untuk mengubah label model
+     protected static ?string $modelLabel = 'Kategori';
+    
+     // Tambahkan properti berikut untuk mengubah label plural model (header)
+     protected static ?string $pluralModelLabel = 'Kategori';
+
     public static function form(Form $form): Form
     {
         return $form
@@ -39,6 +45,7 @@ class CategoryResource extends Resource
                     Grid::make()
                         ->schema([
                             TextInput::make('name')
+                                ->label('Nama')
                                 ->required()
                                 ->maxLength(255)
                                 ->live(onBlur:true)
@@ -53,10 +60,12 @@ class CategoryResource extends Resource
                         ]),
 
                         FileUpload::make('image')
+                            ->label('Gambar')
                             ->image()
                             ->directory('categories'),
 
                         Toggle::make('is_active')
+                            ->label('Aktif')
                             ->required()
                             ->default(true)
                 ])
@@ -68,19 +77,23 @@ class CategoryResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')
+                    ->label('Nama')
                     ->searchable(),
-                Tables\Columns\ImageColumn::make('image'),
-
+                Tables\Columns\ImageColumn::make('image')
+                    ->label('Gambar'),
                 Tables\Columns\TextColumn::make('slug')
                     ->searchable(),                
 
                 Tables\Columns\IconColumn::make('is_active')
+                    ->label('Aktif')
                     ->boolean(),
                 Tables\Columns\TextColumn::make('created_at')
+                    ->label('Dibuat')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
+                    ->label('Diperbarui')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
@@ -90,9 +103,13 @@ class CategoryResource extends Resource
             ])
             ->actions([
                 Tables\Actions\ActionGroup::make([
-                    Tables\Actions\ViewAction::make(),
-                    Tables\Actions\EditAction::make(),
-                    Tables\Actions\DeleteAction::make()->requiresConfirmation(),
+                    Tables\Actions\ViewAction::make()
+                        ->label('Lihat'),
+                    Tables\Actions\EditAction::make()
+                        ->label('Edit'),
+                    Tables\Actions\DeleteAction::make()
+                        ->label('Hapus')
+                        ->requiresConfirmation(),
                 ])
             ])
             ->bulkActions([
