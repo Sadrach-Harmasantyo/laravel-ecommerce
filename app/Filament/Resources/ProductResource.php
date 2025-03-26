@@ -9,6 +9,7 @@ use Filament\Forms;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Group;
 use Filament\Forms\Components\MarkdownEditor;
+use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
@@ -76,6 +77,49 @@ class ProductResource extends Resource
                             
                     ])->columns(2),
 
+                    Section::make('Product Variants')->schema([
+                        Repeater::make('variants')
+                            ->relationship()
+                            ->schema([
+                                TextInput::make('name')
+                                    ->label('Variant Name (e.g., Size)')
+                                    ->required()
+                                    ->maxLength(255),
+                                    
+                                TextInput::make('value')
+                                    ->label('Variant Value (e.g., XL, M, S)')
+                                    ->required()
+                                    ->maxLength(255),
+                                    
+                                TextInput::make('sku')
+                                    ->label('Variant SKU')
+                                    ->required()
+                                    ->maxLength(255),
+                                    
+                                TextInput::make('price')
+                                    ->label('Price')
+                                    ->numeric()
+                                    ->required()
+                                    ->prefix('IDR'),
+                                    
+                                TextInput::make('stock_quantity')
+                                    ->label('Stock Quantity')
+                                    ->numeric()
+                                    ->required()
+                                    ->default(0),
+                                    
+                                Toggle::make('is_active')
+                                    ->label('Active')
+                                    ->required()
+                                    ->default(true),
+                            ])
+                            ->columns(3)
+                            ->defaultItems(1)
+                            ->reorderable()
+                            ->collapsible()
+                            ->columnSpanFull(),
+                    ]),
+
                     Section::make('Images')->schema([
                         FileUpload::make('images')
                             ->multiple()
@@ -100,10 +144,11 @@ class ProductResource extends Resource
 
                 Group::make()->schema([
 
-                    Section::make('Price')->schema([
+                    Section::make('Base Price')->schema([
                         TextInput::make('price')
                             ->numeric()
                             ->required()
+                            ->helperText('Default price. Variants can have different prices.')
                             ->prefix('IDR')
                     ]),
 
@@ -126,7 +171,8 @@ class ProductResource extends Resource
 
                         Toggle::make('in_stock')
                             ->required()
-                            ->default(true),
+                            ->default(true)
+                            ->helperText('Main product stock status. Check variant stocks for details.'),
 
                         Toggle::make('is_active')
                             ->required()
@@ -160,6 +206,10 @@ class ProductResource extends Resource
                 Tables\Columns\TextColumn::make('price')
                     ->money('IDR')
                     ->sortable(),
+                    
+                Tables\Columns\TextColumn::make('variants_count')
+                    ->counts('variants')
+                    ->label('Variants'),
 
                 Tables\Columns\IconColumn::make('is_active')
                     ->boolean(),
@@ -219,7 +269,7 @@ class ProductResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            RelationManagers\VariantsRelationManager::class,
         ];
     }
 

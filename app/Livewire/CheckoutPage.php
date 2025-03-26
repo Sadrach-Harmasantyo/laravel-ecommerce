@@ -10,6 +10,7 @@ use Livewire\Component;
 use Livewire\WithFileUploads;
 use Livewire\Attributes\On;
 use App\Models\Product;
+use App\Models\ProductVariant;
 use App\Models\Bank;
 use App\Services\AdminNotificationService;
 
@@ -47,14 +48,14 @@ class CheckoutPage extends Component
             session()->flash('error', 'Please login to proceed with checkout');
             return redirect()->route('login');
         }
-        
+
         // Pre-fill user information if available
         if (Auth::check()) {
             $user = Auth::user();
             $this->first_name = $user->name; // Assuming name can be used as first name
             $this->email = $user->email;
         }
-        
+
         $this->loadCartItems();
         $this->banks = Bank::where('is_active', true)->get();
     }
@@ -63,7 +64,7 @@ class CheckoutPage extends Component
     public function loadCartItems()
     {
         $this->cartItems = CartManagement::getCartItemsFromCookie();
-        
+
         // Ensure each cart item has the necessary keys
         foreach ($this->cartItems as $key => $item) {
             // If product_id exists but name doesn't, fetch the product and add its name
@@ -76,7 +77,7 @@ class CheckoutPage extends Component
                     $this->cartItems[$key]['name'] = 'Unknown Product';
                 }
             }
-            
+
             // Ensure price key exists (map from unit_amount if needed)
             if (!isset($item['price']) && isset($item['unit_amount'])) {
                 $this->cartItems[$key]['price'] = $item['unit_amount'];
@@ -95,13 +96,13 @@ class CheckoutPage extends Component
                     $this->cartItems[$key]['price'] = 0;
                 }
             }
-            
+
             // Ensure quantity exists
             if (!isset($item['quantity'])) {
                 $this->cartItems[$key]['quantity'] = 1;
             }
         }
-        
+
         $this->calculateTotals();
     }
 
@@ -140,33 +141,33 @@ class CheckoutPage extends Component
                 'payment_method' => 'required',
                 'payment_proof' => 'required|image|max:2048',
             ]);
-            
+
             // Process the order and payment proof
             // Store the payment proof
             $payment_proof_path = $this->payment_proof->store('payment_proofs', 'public');
-            
+
             // Generate order number
             $orderNumber = 'ORD-' . time() . '-' . rand(1000, 9999);
-            
+
             // Begin database transaction
             DB::beginTransaction();
-            
+
             try {
                 // Create order in database
                 $order = Order::create([
                     'user_id' => Auth::id(),
-                    'order_number' => $orderNumber, // Tambahkan order_number
+                    'order_number' => $orderNumber,
                     'grand_total' => $this->finalTotal,
                     'payment_method' => $this->payment_method,
-                    'payment_status' => 'pending', // Default status
-                    'status' => 'new', // Default status
+                    'payment_status' => 'pending',
+                    'status' => 'new',
                     'currency' => 'IDR',
                     'shipping_amount' => $this->shippingCost,
                     'shipping_method' => 'standard',
                     'notes' => 'Order placed via website. Payment proof uploaded.',
-                    'payment_proof' => $payment_proof_path, // Tambahkan payment_proof
+                    'payment_proof' => $payment_proof_path,
                 ]);
-                
+
                 // Create address for the order
                 $order->address()->create([
                     'first_name' => $this->first_name,
@@ -178,34 +179,44 @@ class CheckoutPage extends Component
                     'zip' => $this->zip,
                     'type' => 'shipping',
                 ]);
-                
-                // Create order items - PERBAIKAN DISINI
+
                 foreach ($this->cartItems as $item) {
                     // Ambil data produk langsung dari database untuk memastikan harga yang benar
                     $product = Product::find($item['product_id'] ?? $item['id'] ?? null);
-                    
+
                     if ($product) {
-                        // Gunakan harga dari produk jika item price kosong atau 0
                         $unitPrice = ($item['price'] ?? 0) > 0 ? $item['price'] : $product->price;
                         $quantity = $item['quantity'] ?? 1;
-                        
-                        $order->items()->create([
+
+                        $orderItemData = [
                             'product_id' => $product->id,
                             'quantity' => $quantity,
                             'unit_amount' => $unitPrice,
                             'total_amount' => $unitPrice * $quantity,
-                        ]);
+                        ];
+
+                        if (isset($item['variant_id'])) {
+                            $variant = ProductVariant::find($item['variant_id']);
+                            if ($variant) {
+                                $orderItemData['product_variant_id'] = $variant->id;
+                                $orderItemData['variant_name'] = $variant->name;
+                                $orderItemData['variant_value'] = $variant->value;
+                                $orderItemData['sku'] = $variant->sku;
+                            }
+                        }
+
+                        $order->items()->create($orderItemData);
                     } else {
                         \Log::error('Product not found for order item', ['item' => $item]);
                     }
                 }
-                
+
                 // Commit transaction
                 DB::commit();
 
-                 // Send notification to admins about the new order
+                // Send notification to admins about the new order
                 AdminNotificationService::notifyAdminsAboutNewOrder($order);
-                
+
                 // Store order information in session for success page
                 session([
                     'customer_info' => [
@@ -230,19 +241,19 @@ class CheckoutPage extends Component
                     'order_date' => now()->format('d-m-Y'),
                     'payment_method' => $this->payment_method,
                 ]);
-                
+
                 // Clear the cart after successful order
                 CartManagement::clearCartItems();
-                
+
                 // Redirect to success page
                 return redirect()->route('success');
             } catch (\Exception $e) {
                 // Rollback transaction on error
                 DB::rollBack();
-                
+
                 // Add error message with detailed exception
                 session()->flash('error', 'Failed to place order: ' . $e->getMessage());
-                
+
                 return null;
             }
         } catch (\Exception $e) {

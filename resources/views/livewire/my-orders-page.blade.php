@@ -1,6 +1,6 @@
 <div class="w-full max-w-[85rem] py-10 px-4 sm:px-6 lg:px-8 mx-auto">
   <h1 class="text-4xl font-bold text-slate-500">My Orders</h1>
-  
+
   @if($orders->count() > 0)
   <div class="flex flex-col bg-white p-5 rounded mt-4 shadow-lg">
     <div class="-m-1.5 overflow-x-auto">
@@ -24,7 +24,7 @@
                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">{{ $order->created_at->format('d-m-Y') }}</td>
                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
                   {{-- <span class="bg-{{ $order->status === 'new' ? 'orange' : ($order->status === 'processing' ? 'yellow' : ($order->status === 'completed' ? 'green' : 'red')) }}-500 py-1 px-3 rounded text-white shadow">
-                    {{ ucfirst($order->status) }}
+                  {{ ucfirst($order->status) }}
                   </span> --}}
                   <span>
                     {{ ucfirst($order->status) }}
@@ -32,7 +32,7 @@
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
                   {{-- <span class="bg-{{ $order->payment_status === 'pending' ? 'orange' : ($order->payment_status === 'paid' ? 'green' : 'red') }}-500 py-1 px-3 rounded text-white shadow">
-                    {{ ucfirst($order->payment_status) }}
+                  {{ ucfirst($order->payment_status) }}
                   </span> --}}
                   <span>
                     {{ ucfirst($order->payment_status) }}
@@ -41,6 +41,14 @@
                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">Rp{{ number_format($order->grand_total, 0, ',', '.') }}</td>
                 <td class="px-6 py-4 whitespace-nowrap text-end text-sm font-medium">
                   <a href="{{ route('my-order-detail', $order->id) }}" class="bg-slate-600 text-white py-2 px-4 rounded-md hover:bg-slate-500">View Details</a>
+                  @if($order->status === 'shipped')
+                  <button
+                    wire:click="confirmDelivery({{ $order->id }})"
+                    class="bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600"
+                    onclick="confirm('Are you sure you have received this order?') || event.stopImmediatePropagation()">
+                    Confirm Delivery
+                  </button>
+                  @endif
                 </td>
               </tr>
               @endforeach

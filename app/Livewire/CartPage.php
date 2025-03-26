@@ -91,9 +91,9 @@ class CartPage extends Component
         $this->finalTotal = $this->total;
     }
 
-    public function incrementItem($productId)
+    public function incrementItem($productId, $variantId = null)
     {
-        CartManagement::incrementQuantityToCartItem($productId);
+        CartManagement::incrementQuantityToCartItem($productId, $variantId);
         $this->loadCartItems();
         $this->updateNavbarCartCount();
 
@@ -104,9 +104,9 @@ class CartPage extends Component
         ]);
     }
 
-    public function decrementItem($productId)
+    public function decrementItem($productId, $variantId = null)
     {
-        CartManagement::decrementQuantityToCartItem($productId);
+        CartManagement::decrementQuantityToCartItem($productId, $variantId);
         $this->loadCartItems();
         $this->updateNavbarCartCount();
 
@@ -117,9 +117,9 @@ class CartPage extends Component
         ]);
     }
 
-    public function removeItem($productId)
+    public function removeItem($productId, $variantId = null)
     {
-        CartManagement::removeCartItems($productId);
+        CartManagement::removeCartItems($productId, $variantId);
         $this->loadCartItems();
         $this->updateNavbarCartCount();
 
