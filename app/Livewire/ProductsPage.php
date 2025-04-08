@@ -44,7 +44,7 @@ class ProductsPage extends Component
     public function addToCart($product_id, $variant_id = null)
     {
         if (!Auth::check()) {
-            return redirect()->route('login')->with('error', 'Please login to add items to your cart.');
+            return redirect()->route('login')->with('error', 'Log In untuk masukkan ke keranjang.');
         }
 
         $total_count = CartManagement::addItemToCart($product_id, $variant_id);
@@ -52,7 +52,7 @@ class ProductsPage extends Component
         $this->dispatch('update-cart-count', total_count: $total_count)->to(Navbar::class);
         $this->dispatch('cart-updated');
 
-        $this->alert('success', 'Product added to the cart successfully!', [
+        $this->alert('success', 'Produk berhasil dimasukkan ke keranjang!!', [
             'position' => 'top-end',
             'timer' => 3000,
             'toast' => true,

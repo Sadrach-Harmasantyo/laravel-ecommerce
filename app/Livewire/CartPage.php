@@ -29,7 +29,7 @@ class CartPage extends Component
         // Redirect to login if not authenticated
         if (!Auth::check()) {
             return redirect()->route('login')
-                ->with('error', 'Please login to view your cart.');
+                ->with('error', 'Log In untuk melihat keranjang.');
         }
 
         $this->loadCartItems();
@@ -97,7 +97,7 @@ class CartPage extends Component
         $this->loadCartItems();
         $this->updateNavbarCartCount();
 
-        $this->alert('success', 'Cart updated!', [
+        $this->alert('success', 'Keranjang berhasil diperbarui!', [
             'position' => 'top-end',
             'timer' => 3000,
             'toast' => true,
@@ -110,7 +110,7 @@ class CartPage extends Component
         $this->loadCartItems();
         $this->updateNavbarCartCount();
 
-        $this->alert('success', 'Cart updated!', [
+        $this->alert('success', 'Keranjang berhasil diperbarui!', [
             'position' => 'top-end',
             'timer' => 3000,
             'toast' => true,
@@ -123,7 +123,7 @@ class CartPage extends Component
         $this->loadCartItems();
         $this->updateNavbarCartCount();
 
-        $this->alert('success', 'Item removed from cart!', [
+        $this->alert('success', 'Barang berhasil dihapus dari keranjang!', [
             'position' => 'top-end',
             'timer' => 3000,
             'toast' => true,

@@ -166,10 +166,20 @@
             @foreach($order->items as $item)
             <tr wire:key="{{ $item->id }}">
               <td class="py-4">
-                <div class="flex items-center">
-                  <img class="h-16 w-16 mr-4 object-contain" src="{{ asset('storage/' . $item->product->images[0]) }}" alt="{{ $item->product->name }}">
+                <div class="flex flex-row">
+                <img class="h-16 w-16 mr-4 object-contain" src="{{ asset('storage/' . $item->product->images[0]) }}" alt="{{ $item->product->name }}">
+                <div class="flex-col items-center">
                   <span class="font-semibold">{{ $item->product->name }}</span>
+                  @if($item->variant_name && $item->variant_value)
+        <div class="text-sm text-gray-500">
+          {{ $item->variant_name }}: {{ $item->variant_value }}
+        </div>
+      @endif
+      @if($item->sku)
+        <div class="text-xs text-gray-400">SKU: {{ $item->sku }}</div>
+      @endif
                 </div>
+            </div>
               </td>
               <td class="py-4">Rp{{ number_format($item->unit_amount, 0, ',', '.') }}</td>
               <td class="py-4">

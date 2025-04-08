@@ -45,7 +45,7 @@ class CheckoutPage extends Component
     {
         // Redirect to login if user is not authenticated
         if (!Auth::check()) {
-            session()->flash('error', 'Please login to proceed with checkout');
+            session()->flash('error', 'Log In untuk melanjutkan pembayaran');
             return redirect()->route('login');
         }
 
@@ -74,7 +74,7 @@ class CheckoutPage extends Component
                     $this->cartItems[$key]['name'] = $product->name;
                 } else {
                     // If product doesn't exist, provide a fallback name
-                    $this->cartItems[$key]['name'] = 'Unknown Product';
+                    $this->cartItems[$key]['name'] = 'Produk tidak dikenal';
                 }
             }
 
@@ -125,6 +125,55 @@ class CheckoutPage extends Component
         $this->payment_proof_preview = $this->payment_proof->temporaryUrl();
     }
 
+    /**
+     * Check if all items in cart have sufficient stock
+     * 
+     * @return bool|array Returns true if all items have stock, otherwise returns array with error details
+     */
+    private function checkStockAvailability()
+    {
+        foreach ($this->cartItems as $item) {
+            $quantity = $item['quantity'] ?? 1;
+            
+            // Check variant stock if variant_id exists
+            if (isset($item['variant_id'])) {
+                $variant = ProductVariant::find($item['variant_id']);
+                
+                if ($variant) {
+                    if ($variant->stock_quantity < $quantity) {
+                        return [
+                            'status' => false,
+                            'message' => "Stok tidak cukup untuk produk {$item['name']} varian {$variant->name}: {$variant->value}. Tersedia: {$variant->stock_quantity}, dibutuhkan: {$quantity}."
+                        ];
+                    }
+                }
+            } else {
+                // For non-variant products, check if product has variants
+                $product = Product::find($item['product_id'] ?? $item['id'] ?? null);
+                
+                if ($product) {
+                    // If product has variants, we should not allow purchase without selecting a variant
+                    if ($product->variants()->count() > 0) {
+                        return [
+                            'status' => false,
+                            'message' => "Mohon pilih varian untuk produk {$item['name']}."
+                        ];
+                    }
+                    
+                    // If product has no variants but is out of stock
+                    if (!$product->in_stock) {
+                        return [
+                            'status' => false,
+                            'message' => "Produk {$item['name']} sudah tidak tersedia."
+                        ];
+                    }
+                }
+            }
+        }
+        
+        return true;
+    }
+
     public function placeOrder()
     {
         // Tambahkan debugging
@@ -141,6 +190,13 @@ class CheckoutPage extends Component
                 'payment_method' => 'required',
                 'payment_proof' => 'required|image|max:2048',
             ]);
+
+            // Check stock availability before proceeding
+            $stockCheck = $this->checkStockAvailability();
+            if ($stockCheck !== true) {
+                session()->flash('error', $stockCheck['message']);
+                return null;
+            }
 
             // Process the order and payment proof
             // Store the payment proof
@@ -180,6 +236,8 @@ class CheckoutPage extends Component
                     'type' => 'shipping',
                 ]);
 
+                $productsToUpdateStock = [];
+
                 foreach ($this->cartItems as $item) {
                     // Ambil data produk langsung dari database untuk memastikan harga yang benar
                     $product = Product::find($item['product_id'] ?? $item['id'] ?? null);
@@ -195,6 +253,7 @@ class CheckoutPage extends Component
                             'total_amount' => $unitPrice * $quantity,
                         ];
 
+                        // Handle variant stock reduction if variant exists
                         if (isset($item['variant_id'])) {
                             $variant = ProductVariant::find($item['variant_id']);
                             if ($variant) {
@@ -202,12 +261,32 @@ class CheckoutPage extends Component
                                 $orderItemData['variant_name'] = $variant->name;
                                 $orderItemData['variant_value'] = $variant->value;
                                 $orderItemData['sku'] = $variant->sku;
+                                
+                                // Reduce variant stock
+                                $variant->stock_quantity -= $quantity;
+                                $variant->save();
+                                
+                                // Add product to update stock status list
+                                if (!in_array($product->id, $productsToUpdateStock)) {
+                                    $productsToUpdateStock[] = $product->id;
+                                }
+                                
+                                // Log stock change
+                                \Log::info("Reduced stock for variant {$variant->id} ({$variant->name}: {$variant->value}) by {$quantity}. New stock: {$variant->stock_quantity}");
                             }
                         }
 
                         $order->items()->create($orderItemData);
                     } else {
-                        \Log::error('Product not found for order item', ['item' => $item]);
+                        \Log::error('Produk yang Anda pesan tidak ditemukan!', ['item' => $item]);
+                    }
+                }
+
+                // Update stock status for all affected products
+                foreach ($productsToUpdateStock as $productId) {
+                    $product = Product::find($productId);
+                    if ($product) {
+                        $product->updateStockStatus();
                     }
                 }
 
@@ -252,13 +331,13 @@ class CheckoutPage extends Component
                 DB::rollBack();
 
                 // Add error message with detailed exception
-                session()->flash('error', 'Failed to place order: ' . $e->getMessage());
+                session()->flash('error', 'Gagal melakukan pemesanan: ' . $e->getMessage());
 
                 return null;
             }
         } catch (\Exception $e) {
             // Tangkap error validasi atau error lainnya
-            session()->flash('error', 'Error in form submission: ' . $e->getMessage());
+            session()->flash('error', 'Gagal mengisi form: ' . $e->getMessage());
             return null;
         }
     }

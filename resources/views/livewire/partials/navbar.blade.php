@@ -62,7 +62,7 @@
                   <!-- Dropdown Menu -->
                   <div class="hs-dropdown-menu transition-[opacity,margin] duration hs-dropdown-open:opacity-100 opacity-0 hidden min-w-[15rem] bg-white shadow-md rounded-lg p-2 mt-2 dark:bg-gray-800 dark:border dark:border-gray-700" aria-labelledby="hs-dropdown-with-header">
                     <div class="py-3 px-5 -m-2 bg-gray-100 rounded-t-lg dark:bg-gray-700">
-                      <p class="text-sm text-gray-500 dark:text-gray-400">Signed in as</p>
+                      <p class="text-sm text-gray-500 dark:text-gray-400">Masuk sebagai</p>
                       <p class="text-sm font-medium text-gray-800 dark:text-gray-300">{{ Auth::user()->email }}</p>
                     </div>
                     <div class="mt-2 py-2 first:pt-0 last:pb-0">
@@ -73,14 +73,14 @@
                           <path d="M22 5h-7v7h7V5z"/>
                           <path d="M9 19V5h7v14H9z"/>
                         </svg>
-                        My Orders
+                        Pesanan Saya
                       </a>
                       <a wire:navigate class="flex items-center gap-x-3.5 py-2 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-100 focus:ring-2 focus:ring-blue-500 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300" href="{{ route('profile') }}">
                         <svg class="flex-shrink-0 w-4 h-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                           <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/>
                           <circle cx="12" cy="7" r="4"/>
                         </svg>
-                        Profile
+                        Profil
                       </a>
                       <!-- Logout Form -->
                       <form method="POST" action="{{ route('logout') }}">
@@ -91,7 +91,7 @@
                             <polyline points="16 17 21 12 16 7"/>
                             <line x1="21" y1="12" x2="9" y2="12"/>
                           </svg>
-                          Logout
+                          Keluar
                         </button>
                       </form>
                     </div>

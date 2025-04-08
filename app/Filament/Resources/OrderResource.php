@@ -194,6 +194,15 @@ class OrderResource extends Resource
                                 ->searchable()
                                 ->preload()
                                 ->required(),
+                            TextInput::make('variant_name')
+                                ->label('Nama Varian')
+                                ->maxLength(255),
+                            TextInput::make('variant_value')
+                                ->label('Nilai Varian')
+                                ->maxLength(255),
+                            TextInput::make('sku')
+                                ->label('SKU')
+                                ->maxLength(255),
                             TextInput::make('quantity')
                                 ->label('Jumlah')
                                 ->numeric()
@@ -356,7 +365,121 @@ class OrderResource extends Resource
             ]);
     }
 
-    // Remove the infolist method completely
+    public static function infolist(Infolist $infolist): Infolist
+    {
+        return $infolist
+            ->schema([
+                InfolistsSection::make('Informasi Pesanan')
+                    ->schema([
+                        TextEntry::make('user.name')
+                            ->label('Pelanggan'),
+                        TextEntry::make('order_number')
+                            ->label('Nomor Pesanan'),
+                        TextEntry::make('status')
+                            ->label('Status Pesanan')
+                            ->badge()
+                            ->color(fn(string $state): string => match ($state) {
+                                'new' => 'info',
+                                'processing' => 'warning',
+                                'shipped' => 'success',
+                                'delivered' => 'success',
+                                'cancelled' => 'danger',
+                            })
+                            ->formatStateUsing(fn(string $state): string => match ($state) {
+                                'new' => 'Baru',
+                                'processing' => 'Diproses',
+                                'shipped' => 'Dikirim',
+                                'delivered' => 'Terkirim',
+                                'cancelled' => 'Dibatalkan',
+                                default => $state,
+                            }),
+                        TextEntry::make('payment_method')
+                            ->label('Metode Pembayaran'),
+                        TextEntry::make('payment_status')
+                            ->label('Status Pembayaran')
+                            ->badge()
+                            ->color(fn(string $state): string => match ($state) {
+                                'pending' => 'warning',
+                                'paid' => 'success',
+                                'failed' => 'danger',
+                                'refunded' => 'info',
+                            })
+                            ->formatStateUsing(fn(string $state): string => match ($state) {
+                                'pending' => 'Tertunda',
+                                'paid' => 'Dibayar',
+                                'failed' => 'Gagal',
+                                'refunded' => 'Dikembalikan',
+                                default => $state,
+                            }),
+                        TextEntry::make('grand_total')
+                            ->label('Total Keseluruhan')
+                            ->money('IDR'),
+                        TextEntry::make('shipping_amount')
+                            ->label('Biaya Pengiriman')
+                            ->money('IDR'),
+                        TextEntry::make('shipping_method')
+                            ->label('Metode Pengiriman'),
+                        TextEntry::make('tracking_number')
+                            ->label('Nomor Resi')
+                            ->url(fn($record) => $record->tracking_number ? "https://cekresi.com/?noresi={$record->tracking_number}" : null, true)
+                            ->visible(fn($record) => !empty($record->tracking_number)),
+                        TextEntry::make('currency')
+                            ->label('Mata Uang'),
+                        TextEntry::make('notes')
+                            ->label('Catatan Pesanan')
+                            ->markdown(),
+                        ImageEntry::make('payment_proof')
+                            ->label('Bukti Pembayaran'),
+                    ]),
+
+                InfolistsSection::make('Barang Pesanan')
+                    ->schema([
+                        Infolists\Components\RepeatableEntry::make('items')
+                            ->label('Barang')
+                            ->schema([
+                                TextEntry::make('product.name')
+                                    ->label('Produk'),
+                                TextEntry::make('variant_name')
+                                    ->label('Nama Varian'),
+                                TextEntry::make('variant_value')
+                                    ->label('Nilai Varian'),
+                                TextEntry::make('sku')
+                                    ->label('SKU'),
+                                TextEntry::make('quantity')
+                                    ->label('Jumlah'),
+                                TextEntry::make('unit_amount')
+                                    ->label('Harga Satuan')
+                                    ->money('IDR'),
+                                TextEntry::make('total_amount')
+                                    ->label('Total')
+                                    ->money('IDR'),
+                            ])
+                            ->columns(4),
+                    ]),
+
+                // Fix: Change RepeatableEntry to just displaying a single address
+                InfolistsSection::make('Alamat Pengiriman')
+                    ->schema([
+                        // For hasOne relationship, use TextEntry directly with dot notation
+                        TextEntry::make('address.first_name')
+                            ->label('Nama Depan'),
+                        TextEntry::make('address.last_name')
+                            ->label('Nama Belakang'),
+                        TextEntry::make('address.phone')
+                            ->label('Nomor Telepon'),
+                        TextEntry::make('address.address')
+                            ->label('Alamat'),
+                        TextEntry::make('address.city')
+                            ->label('Kota'),
+                        TextEntry::make('address.state')
+                            ->label('Provinsi'),
+                        TextEntry::make('address.zip')
+                            ->label('Kode Pos'),
+                        TextEntry::make('address.type')
+                            ->label('Tipe'),
+                    ]),
+            ]);
+    }
 
     public static function getRelations(): array
     {

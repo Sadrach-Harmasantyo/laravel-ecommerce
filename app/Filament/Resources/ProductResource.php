@@ -123,49 +123,6 @@ class ProductResource extends Resource
                             ->columnSpanFull(),
                     ]),
 
-                    Section::make('Varian Produk')->schema([
-                        Repeater::make('variants')
-                            ->relationship()
-                            ->schema([
-                                TextInput::make('name')
-                                    ->label('Nama Varian (e.g., Ukuran)')
-                                    ->required()
-                                    ->maxLength(255),
-
-                                TextInput::make('value')
-                                    ->label('Nilai Varian (e.g., XL, M, S)')
-                                    ->required()
-                                    ->maxLength(255),
-
-                                TextInput::make('sku')
-                                    ->label('SKU Varian')
-                                    ->required()
-                                    ->maxLength(255),
-
-                                TextInput::make('price')
-                                    ->label('Harga')
-                                    ->numeric()
-                                    ->required()
-                                    ->prefix('IDR'),
-
-                                TextInput::make('stock_quantity')
-                                    ->label('Jumlah Stok')
-                                    ->numeric()
-                                    ->required()
-                                    ->default(0),
-
-                                Toggle::make('is_active')
-                                    ->label('Aktif')
-                                    ->required()
-                                    ->default(true),
-                            ])
-                            ->columns(3)
-                            ->defaultItems(1)
-                            ->reorderable()
-                            ->collapsible()
-                            ->columnSpanFull(),
-                    ]),
-
                     Section::make('Gambar')->schema([
                         FileUpload::make('images')
                             ->label('Gambar')

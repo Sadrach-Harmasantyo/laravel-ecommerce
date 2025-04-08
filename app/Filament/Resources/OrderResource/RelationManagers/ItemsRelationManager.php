@@ -26,6 +26,15 @@ class ItemsRelationManager extends RelationManager
                     ->searchable()
                     ->preload()
                     ->required(),
+                Forms\Components\TextInput::make('variant_name')
+                    ->label('Nama Varian')
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('variant_value')
+                    ->label('Nilai Varian')
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('sku')
+                    ->label('SKU')
+                    ->maxLength(255),
                 Forms\Components\TextInput::make('quantity')
                     ->label('Jumlah')
                     ->numeric()
@@ -51,6 +60,14 @@ class ItemsRelationManager extends RelationManager
                     ->label('Produk')
                     ->searchable()
                     ->sortable(),
+                Tables\Columns\TextColumn::make('variant_name')
+                    ->label('Nama Varian')
+                    ->description(fn($record) => $record->variant_value)
+                    ->searchable()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('sku')
+                    ->label('SKU')
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('quantity')
                     ->label('Jumlah')
                     ->sortable(),
