@@ -23,7 +23,7 @@
         <div class="flex items-center justify-between">
           <label for="password" class="block text-sm font-medium leading-6 text-gray-900">Password</label>
           {{-- <div class="text-sm">
-            <a href="{{ route('password.request') }}" class="font-semibold text-indigo-600 hover:text-indigo-500">Forgot password?</a>
+            <a href="{{ route('password.request') }}" class="font-semibold text-indigo-600 hover:text-indigo-500">Lupa Password?</a>
           </div> --}}
         </div>
         <div class="mt-2">
@@ -34,7 +34,7 @@
       
       {{-- <div class="flex items-center">
         <input wire:model="remember" id="remember" name="remember" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600">
-        <label for="remember" class="ml-2 block text-sm text-gray-900">Remember me</label>
+        <label for="remember" class="ml-2 block text-sm text-gray-900">Ingat Saya</label>
       </div> --}}
 
       <div>
