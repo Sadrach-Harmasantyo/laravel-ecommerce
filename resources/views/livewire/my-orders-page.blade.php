@@ -27,7 +27,7 @@
                   {{ ucfirst($order->status) }}
                   </span> --}}
                   <span>
-                    {{ ucfirst($order->status) }}
+                    {{ \App\Helpers\OrderHelper::translateOrderStatus($order->status) }}
                   </span>
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
@@ -35,7 +35,7 @@
                   {{ ucfirst($order->payment_status) }}
                   </span> --}}
                   <span>
-                    {{ ucfirst($order->payment_status) }}
+                    {{ \App\Helpers\OrderHelper::translatePaymentStatus($order->payment_status) }}
                   </span>
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">Rp{{ number_format($order->grand_total, 0, ',', '.') }}</td>
@@ -45,7 +45,7 @@
                   <button
                     wire:click="confirmDelivery({{ $order->id }})"
                     class="bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600"
-                    onclick="confirm('Are you sure you have received this order?') || event.stopImmediatePropagation()">
+                    onclick="confirm('Apakah Anda yakin pesanan telah diterima?') || event.stopImmediatePropagation()">
                     Konfirmasi Pengiriman
                   </button>
                   @endif
