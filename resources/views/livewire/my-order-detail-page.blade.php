@@ -78,7 +78,7 @@
             {{ ucfirst($order->status) }}
             </span> --}}
             <span>
-              {{ ucfirst($order->status) }}
+              {{ \App\Helpers\OrderHelper::translateOrderStatus($order->status) }}
             </span>
           </div>
         </div>
@@ -140,7 +140,7 @@
             {{ ucfirst($order->payment_status) }}
             </span> --}}
             <span>
-              {{ ucfirst($order->payment_status) }}
+              {{ \App\Helpers\OrderHelper::translatePaymentStatus($order->payment_status) }}
             </span>
           </div>
         </div>
