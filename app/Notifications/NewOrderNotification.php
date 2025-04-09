@@ -40,14 +40,14 @@ class NewOrderNotification extends Notification implements ShouldQueue
         $orderUrl = route('filament.admin.resources.orders.view', $this->order->id);
         
         return (new MailMessage)
-            ->subject('New Order Received: #' . $this->order->order_number)
-            ->greeting('Hello Admin!')
-            ->line('A new order has been placed by ' . $this->order->user->name . '.')
-            ->line('Order Number: ' . $this->order->order_number)
-            ->line('Order Total: Rp' . number_format($this->order->grand_total, 0, ',', '.'))
-            ->line('Payment Method: ' . ucfirst(str_replace('_', ' ', $this->order->payment_method)))
-            ->action('View Order Details', $orderUrl)
-            ->line('Thank you for using our application!');
+            ->subject('Pesanan Baru Diterima: #' . $this->order->order_number)
+            ->greeting('Halo Admin!')
+            ->line('Pesanan baru telah dibuat oleh ' . $this->order->user->name . '.')
+            ->line('Nomor Pesanan: ' . $this->order->order_number)
+            ->line('Total Pesanan: Rp' . number_format($this->order->grand_total, 0, ',', '.'))
+            ->line('Metode Pembayaran: ' . ucfirst(str_replace('_', ' ', $this->order->payment_method)))
+            ->action('Lihat Detail Pesanan', $orderUrl)
+            ->line('Terima kasih telah menggunakan aplikasi kami!');
     }
 
     /**
