@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Livewire\Component;
 
-#[Title('Register - TokoOnline')]
+#[Title('Register - TokoBajuSepatu')]
 class RegisterPage extends Component
 {
     public $name = '';

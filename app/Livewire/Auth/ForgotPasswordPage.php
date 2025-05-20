@@ -4,7 +4,7 @@ namespace App\Livewire\Auth;
 
 use Livewire\Component;
 
-#[Title('Forgot Password - TokoOnline')]
+#[Title('Forgot Password - TokoBajuSepatu')]
 class ForgotPasswordPage extends Component
 {
     public function render()

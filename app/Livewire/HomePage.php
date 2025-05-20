@@ -8,7 +8,7 @@ use App\Models\Product;
 use Livewire\Attributes\Title;
 use Livewire\Component;
 
-#[Title('Home - TokoOnline')]
+#[Title('Home - TokoBajuSepatu')]
 
 class HomePage extends Component
 {

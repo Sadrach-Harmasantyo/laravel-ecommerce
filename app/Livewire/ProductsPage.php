@@ -15,7 +15,7 @@ use Livewire\Component;
 use Livewire\WithPagination;
 use Illuminate\Support\Facades\Auth;
 
-#[Title('Products - TokoOnline')]
+#[Title('Products - TokoBajuSepatu')]
 class ProductsPage extends Component
 {
     use LivewireAlert, WithPagination;

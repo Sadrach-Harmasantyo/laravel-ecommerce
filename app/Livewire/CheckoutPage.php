@@ -14,7 +14,7 @@ use App\Models\ProductVariant;
 use App\Models\Bank;
 use App\Services\AdminNotificationService;
 
-#[Title('Checkout - TokoOnline')]
+#[Title('Checkout - TokoBajuSepatu')]
 class CheckoutPage extends Component
 {
     use WithFileUploads;

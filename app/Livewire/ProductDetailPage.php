@@ -25,7 +25,7 @@ class ProductDetailPage extends Component
     public function mount($slug)
     {
         $this->product = Product::where('slug', $slug)->firstOrFail();
-        $this->title = $this->product->name . " - TokoOnline";
+        $this->title = $this->product->name . " - TokoBajuSepatu";
 
         // Check if product has variants
         $this->hasVariants = $this->product->variants()->exists();

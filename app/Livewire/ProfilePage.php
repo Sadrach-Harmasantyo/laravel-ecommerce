@@ -6,7 +6,7 @@ use App\Models\Order;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
-#[Title('Profile - TokoOnline')]
+#[Title('Profile - TokoBajuSepatu')]
 class ProfilePage extends Component
 {
     public function render()

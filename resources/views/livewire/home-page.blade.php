@@ -5,8 +5,8 @@
           <!-- Grid -->
           <div class="grid md:grid-cols-2 gap-4 md:gap-8 xl:gap-20 md:items-center">
             <div>
-              <h1 class="block text-3xl font-bold text-gray-800 sm:text-4xl lg:text-6xl lg:leading-tight dark:text-white">Mulai perjalanan Anda dengan <span class="text-blue-600">TokoOnline</span></h1>
-              <p class="mt-3 text-lg text-gray-800 dark:text-gray-400">Belanja berbagai macam produk elektronik seperti Smartphone, Laptop, Smartwatch, Televisi dan banyak lagi.</p>
+              <h1 class="block text-3xl font-bold text-gray-800 sm:text-4xl lg:text-6xl lg:leading-tight dark:text-white">Mulai perjalanan Anda dengan <span class="text-blue-600">TokoBajuSepatu</span></h1>
+              <p class="mt-3 text-lg text-gray-800 dark:text-gray-400">Belanja berbagai macam Baju dan Tas dari Berbagai Brand Terbaik.</p>
       
               <!-- Buttons -->
               <div class="mt-7 grid gap-3 w-full sm:inline-flex">

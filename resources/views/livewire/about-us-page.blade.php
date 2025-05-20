@@ -2,9 +2,9 @@
     <!-- Hero Section -->
     <div class="bg-gradient-to-r from-blue-100 to-cyan-100 rounded-xl p-8 md:p-12 mb-8">
         <div class="text-center">
-            <h1 class="text-4xl md:text-5xl font-bold text-gray-800 mb-4">Tentang TokoOnline</h1>
+            <h1 class="text-4xl md:text-5xl font-bold text-gray-800 mb-4">Tentang tokobajusepatu</h1>
             <p class="text-lg text-gray-600 max-w-3xl mx-auto">
-                Kami berkomitmen untuk menghadirkan produk elektronik berkualitas terbaik yang menggabungkan teknologi canggih, inovasi terbaru, dan keandalan tinggi.
+                Kami berkomitmen untuk menghadirkan koleksi fashion terbaik.
             </p>
         </div>
     </div>
@@ -15,13 +15,15 @@
             <div>
                 <h2 class="text-3xl font-bold text-gray-800 mb-4">Cerita Kami</h2>
                 <p class="text-gray-600 mb-4">
-                    Didirikan pada tahun 2023, TokoOnline dimulai dengan misi sederhana: membuat barang elektronik berkualitas tinggi dapat diakses oleh semua orang. Apa yang dimulai sebagai toko online kecil telah berkembang menjadi tujuan tepercaya bagi para penggemar teknologi dan konsumen sehari-hari.
+                    Didirikan pada tahun 2023, Tokobajusepatu berawal dari sebuah misi sederhana: membuat pakaian dan sepatu berkualitas tinggi dapat dijangkau oleh semua orang. Apa yang awalnya hanya toko online kecil dengan beberapa rak virtual kini telah tumbuh menjadi destinasi utama bagi pecinta fashion dan masyarakat yang ingin tampil percaya diri setiap hari.
                 </p>
                 <p class="text-gray-600 mb-4">
-                    Perjalanan kami didorong oleh semangat untuk berinovasi dan komitmen terhadap kepuasan pelanggan. Kami percaya bahwa teknologi harus meningkatkan kehidupan, dan kami berdedikasi untuk merancang produk yang dapat melakukan hal tersebut.
-                </p>
+                    Perjalanan kami dibentuk oleh hasrat akan gaya yang terus berkembang dan komitmen terhadap kepuasan pelanggan. Kami percaya bahwa fashion bukan hanya tentang penampilan, tapi juga tentang mengekspresikan diri dan merasa nyaman dalam setiap langkah.</p>
                 <p class="text-gray-600">
-                    Saat ini, kami menawarkan beragam produk mulai dari ponsel cerdas dan laptop hingga perangkat dan aksesori rumah pintar, semuanya dipilih dengan mempertimbangkan kebutuhan pelanggan kami.
+                    Kini, kami dengan bangga menawarkan beragam koleksi pakaian dan sepatu, dari gaya kasual hingga formal, semua dipilih dengan cermat untuk memenuhi kebutuhan pelanggan kami—baik untuk aktivitas harian, acara spesial, maupun perjalanan penuh gaya.
+                </p>
+                <p class="text-gray-600">Di TokoBajuSepatu, kami tidak hanya menjual produk—kami membangun kepercayaan, menghadirkan inspirasi, dan merayakan gaya hidup penuh warna.
+
                 </p>
             </div>
             <div class="rounded-xl overflow-hidden shadow-lg">

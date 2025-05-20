@@ -6,7 +6,7 @@ use App\Models\Brand;
 use Livewire\Attributes\Title;
 use Livewire\Component;
 
-#[Title('Brands - TokoOnline')]
+#[Title('Brands - TokoBajuSepatu')]
 class BrandsPage extends Component
 {
     public function render()

@@ -6,7 +6,7 @@ use App\Helpers\CartManagement;
 use Livewire\Component;
 use Illuminate\Support\Facades\Session;
 
-#[Title('Success - TokoOnline')]
+#[Title('Success - TokoBajuSepatu')]
 class SuccessPage extends Component
 {
     public $orderInfo = [];

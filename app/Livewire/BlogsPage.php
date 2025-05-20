@@ -7,7 +7,7 @@ use Livewire\Attributes\Title;
 use Livewire\Component;
 use Livewire\WithPagination;
 
-#[Title('Blog - TokoOnline')]
+#[Title('Blog - TokoBajuSepatu')]
 class BlogsPage extends Component
 {
     use WithPagination;

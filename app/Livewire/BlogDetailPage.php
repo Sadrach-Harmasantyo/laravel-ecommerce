@@ -10,7 +10,7 @@ class BlogDetailPage extends Component
 {
     public Blog $blog;
 
-    #[Title('Blog - TokoOnline')]
+    #[Title('Blog - TokoBajuSepatu')]
     public function mount(Blog $blog)
     {
         if (!$blog->is_published || $blog->published_at > now()) {

@@ -6,7 +6,7 @@ use App\Models\Order;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
-#[Title('My Orders - TokoOnline')]
+#[Title('My Orders - TokoBajuSepatu')]
 class MyOrdersPage extends Component
 {
 

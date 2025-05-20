@@ -6,7 +6,7 @@ use App\Models\Order;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
-#[Title('My Order Detail - TokoOnline')]
+#[Title('My Order Detail - TokoBajuSepatu')]
 class MyOrderDetailPage extends Component
 {
     public $orderId;
