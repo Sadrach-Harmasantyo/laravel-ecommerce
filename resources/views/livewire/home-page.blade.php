@@ -399,7 +399,7 @@
               <div class="flex flex-wrap items-center justify-between pb-4 mb-6 space-x-2 border-b dark:border-gray-700">
                 <div class="flex items-center px-6 mb-2 md:mb-0 ">
                   <div class="flex mr-2 rounded-full">
-                    <img src="https://i.postimg.cc/rF6G0Dh9/pexels-emmy-e-2381069.jpg" alt="" class="object-cover w-12 h-12 rounded-full">
+                    <img src="https://randomuser.me/api/portraits/men/68.jpg" alt="" class="object-cover w-12 h-12 rounded-full">
                   </div>
                   <div>
                     <h2 class="text-lg font-semibold text-gray-900 dark:text-gray-300">
@@ -480,7 +480,7 @@
               <div class="flex flex-wrap items-center justify-between pb-4 mb-6 space-x-2 border-b dark:border-gray-700">
                 <div class="flex items-center px-6 mb-2 md:mb-0 ">
                   <div class="flex mr-2 rounded-full">
-                    <img src="https://i.postimg.cc/q7pv50zT/pexels-edmond-dant-s-4342352.jpg" alt="" class="object-cover w-12 h-12 rounded-full">
+                    <img src="https://randomuser.me/api/portraits/women/65.jpg" alt="" class="object-cover w-12 h-12 rounded-full">
                   </div>
                   <div>
                     <h2 class="text-lg font-semibold text-gray-900 dark:text-gray-300">
@@ -567,7 +567,7 @@
               <div class="flex flex-wrap items-center justify-between pb-4 mb-6 space-x-2 border-b dark:border-gray-700">
                 <div class="flex items-center px-6 mb-2 md:mb-0 ">
                   <div class="flex mr-2 rounded-full">
-                    <img src="https://i.postimg.cc/JzmrHQmk/pexels-pixabay-220453.jpg" alt="" class="object-cover w-12 h-12 rounded-full">
+                    <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="" class="object-cover w-12 h-12 rounded-full">
                   </div>
                   <div>
                     <h2 class="text-lg font-semibold text-gray-900 dark:text-gray-300">
@@ -654,7 +654,7 @@
               <div class="flex flex-wrap items-center justify-between pb-4 mb-6 space-x-2 border-b dark:border-gray-700">
                 <div class="flex items-center px-6 mb-2 md:mb-0 ">
                   <div class="flex mr-2 rounded-full">
-                    <img src="https://i.postimg.cc/4NMZPYdh/pexels-dinielle-de-veyra-4195342.jpg" alt="" class="object-cover w-12 h-12 rounded-full">
+                    <img src="https://randomuser.me/api/portraits/men/65.jpg" alt="" class="object-cover w-12 h-12 rounded-full">
                   </div>
                   <div>
                     <h2 class="text-lg font-semibold text-gray-900 dark:text-gray-300">

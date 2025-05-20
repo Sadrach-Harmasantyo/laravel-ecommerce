@@ -4,7 +4,7 @@
         <div class="text-center">
             <h1 class="text-4xl md:text-5xl font-bold text-gray-800 mb-4">Artikel Kami</h1>
             <p class="text-lg text-gray-600 max-w-3xl mx-auto">
-                Ikuti terus berita, tips, dan wawasan terkini tentang teknologi dan elektronik.
+                Ikuti terus berita, tips, dan wawasan terkini tentang baju dan sepatu.
             </p>
         </div>
     </div>
